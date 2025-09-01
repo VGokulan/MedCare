@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <title>Login Portal</title>
+    <link rel="stylesheet" href="{% static 'pages/css/lostyle.css' %}" />
+  </head>
+  <body>
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container" id="container">
+      <!-- User Login Form -->
+      <div class="form-container user-login">
+        <form action="{% url 'user_login' %}" method="POST">
+          {% csrf_token %}
+          <h1>User Sign In</h1>
+          <div class="social-icons">
+            <a href="#" class="icon"
+              ><i class="fa-brands fa-google-plus-g"></i
+            ></a>
+            <a href="#" class="icon"><i class="fa-brands fa-microsoft"></i></a>
+          </div>
+          <span>or use your email password</span>
+          <input type="email" name="email" placeholder="Email" required />
+          <div class="password-container">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              id="user-password"
+              required
+            />
+            <!-- FIX: This span MUST have the correct ID -->
+            <span class="toggle-password" id="toggle-user-password"
+              ><i class="far fa-eye"></i
+            ></span>
+          </div>
+          <a href="#">Forget Your Password?</a>
+          <div class="signup-link">
+            Doesn't have an account?
+            <a href="{% url 'signup_page' %}">Sign Up</a>
+          </div>
+          <button type="submit">Sign In</button>
+        </form>
+      </div>
+
+      <!-- Admin Login Form -->
+      <div class="form-container admin-login">
+        <form action="{% url 'admin_login' %}" method="POST">
+          {% csrf_token %}
+          <h1>Admin Sign In</h1>
+          <div class="social-icons">
+            <a href="#" class="icon"
+              ><i class="fa-brands fa-google-plus-g"></i
+            ></a>
+            <a href="#" class="icon"><i class="fa-brands fa-microsoft"></i></a>
+          </div>
+          <span>use your admin credentials</span>
+          <input type="text" name="email" placeholder="Admin Email" />
+
+          <div class="password-container">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              id="admin-password"
+              required
+            />
+            <!-- FIX: This span MUST have the correct ID -->
+            <span class="toggle-password" id="toggle-admin-password"
+              ><i class="far fa-eye"></i
+            ></span>
+          </div>
+          <a href="#">Forget Your Password?</a>
+          <button type="submit">Sign In</button>
+        </form>
+      </div>
+
+      <!-- Toggle Container -->
+      <div class="toggle-container">
+        <div class="toggle">
+          <div class="toggle-panel toggle-left">
+            <h1>User Portal</h1>
+            <p>Sign in to access your personal account and features</p>
+            <button class="hidden" id="login">User Login</button>
+          </div>
+          <div class="toggle-panel toggle-right">
+            <h1>Admin Portal</h1>
+            <p>Access administrative functions and system controls</p>
+            <button class="hidden" id="register">Admin Login</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'pages/js/1.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,739 @@
+{% comment %}
+  IMPORTANT: This tag MUST be at the very top of the file.
+  It enables the use of the {% static %} tag for CSS, JS, and images.
+{% endcomment %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedCare</title>
+
+    {% comment %} Django needs to know the path to your favicon image {% endcomment %}
+    <link rel="icon" href="{% static 'pages/images/log.png' %}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    {% comment %}
+      FIX #1: Correct path to your CSS file using the 'static' tag.
+    {% endcomment %}
+    <link rel="stylesheet" href="{% static 'pages/css/home.css' %}">
+</head>
+<body>
+
+<!--hero and header-->
+    <div class="header">
+        {% comment %} FIX #2: Correct path for all local images. {% endcomment %}
+        <img src="{% static 'pages/images/log.png' %}" alt="MedCare Logo">
+        <h1>MedCare</h1>
+        <div class="content">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#insights">Insights</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="but">
+            {% comment %}
+              FIX #3: Correct link to the login page using the 'url' tag.
+              This uses the 'name' from your urls.py file.
+            {% endcomment %}
+            <a href="{% url 'login_page' %}"><button type="button">Login</button></a>
+        </div>
+    </div>
+
+<section class="eq-section eq-hero eq-hero-desktop" id="home">
+    <div class="eq-hero-wrap">
+        <div class="eq-hero-video-wrap">
+            <video class="eq-hero-video" autoplay muted loop style="opacity: 0.82;">
+                <source src="https://www.equipo.io/wp-content/themes/equipohealth/images/bgbnrvideo.mp4" type="video/mp4">
+                <source src="https://www.equipo.io/wp-content/themes/equipohealth/images/bgbnrvideo.ogg" type="video/ogg">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="eq-hero-slider">
+            <div class="swiper slider-one-slide text-slider-style-01">
+                <div class="swiper-wrapper">
+                    <!-- start text slider item -->
+                    <div class="swiper-slide">
+                        <div class="eq-hero-slider-item">
+                            <div class="eq-hero-details">
+                                <div class="eq-hero-title"> Transforming Healthcare Through Innovation</div>
+                                <div class="eq-hero-title--highlight"> Patients at the Center of Care</div>
+                                <div class="eq-hero-description">
+                                    <p> Revolutionizing Care with AI-Powered Integrated Solutions  </p>
+                                </div>
+                                {% comment %} NOTE: This link should also be a Django {% url %} tag once you create the page for it. {% endcomment %}
+                                <a href="#" class="eq-btn"> Book a Demo </a>
+                            </div>
+                            <div class="eq-hero-image">
+                                <img src="{% static 'pages/images/image-removebg-preview.png' %}" class="img-fluid" alt="Equipohealth" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end text slider item -->
+                    
+                    <!-- start text slider item -->
+                    <div class="swiper-slide">
+                        <div class="eq-hero-slider-item">
+                            <div class="eq-hero-details">
+                                <div class="eq-hero-title"> Team Up for</div>
+                                <div class="eq-hero-title--highlight"> Hospitals resolved to achieve Efficiency</div>
+                                <div class="eq-hero-description">
+                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p>
+                                </div>
+                                <a href="#" class="eq-btn"> Book a Demo </a>
+                            </div>
+                            <div class="eq-hero-image">
+                                <img src="https://www.equipo.io/wp-content/uploads/2024/09/HeroImage_06.webp" class="img-fluid" alt="Equipohealth" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end text slider item -->
+                    
+                    <!-- start text slider item -->
+                    <div class="swiper-slide">
+                        <div class="eq-hero-slider-item">
+                            <div class="eq-hero-details">
+                                <div class="eq-hero-title"> Team Up for</div>
+                                <div class="eq-hero-title--highlight"> IPAs determined to Deliver</div>
+                                <div class="eq-hero-description">
+                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p>
+                                </div>
+                                <a href="#" class="eq-btn"> Book a Demo </a>
+                            </div>
+                            <div class="eq-hero-image">
+                                <img src="{% static 'pages/images/image3.jpg' %}" class="img-fluid" alt="Equipohealth" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end text slider item -->
+                    
+                    <!-- start text slider item -->
+                    <div class="swiper-slide">
+                        <div class="eq-hero-slider-item">
+                            <div class="eq-hero-details">
+                                <div class="eq-hero-title"> Cut Costs, Not Care</div>
+                                <div class="eq-hero-title--highlight"> ACOs persistent in Cost Reduction</div>
+                                <div class="eq-hero-description">
+                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p>
+                                </div>
+                                <a href="#" class="eq-btn"> Book a Demo </a>
+                            </div>
+                            <div class="eq-hero-image">
+                                <img src="https://www.equipo.io/wp-content/uploads/2024/09/HeroImage_04.webp" class="img-fluid" alt="Equipohealth" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end text slider item -->
+                </div>
+                
+                <div class="d-flex">
+                    <!-- start slider navigation -->
+                    <div class="slider-one-slide-prev-1 swiper-button-prev"> </div>
+                    <div class="slider-one-slide-next-1 swiper-button-next"> </div>
+                    <!-- end slider navigation -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--About section-->
+<section class="section about-section">
+<h2 class="gradient-text " id="about">Who We Are </h2>
+    <div class="animated-line"></div>
+
+<!-- ABOUT SECTION -->
+    
+        <div class="container">
+            <div class="about-content">
+                <!-- Left Text - Made wider -->
+                <div class="about-text">
+                    <h2 class="section-title">Transforming Healthcare with AI Innovation</h2>
+                    <p>MedCare is a risk stratification and care management platform designed to tackle the most pressing challenge in healthcare: identifying the 5% of members who drive 50% of costs. We empower payers and providers to shift from a reactive, fee-for-service model to a proactive, value-based care system.
+                     </p>
+                     <p>By harnessing machine learning models trained on robust datasets and enhanced with clinical data from sources, This precise forecasting allows you to anticipate health deteriorations before they become costly emergencies.
+                    </p>   
+                     <p>Our advanced platform seamlessly integrates with existing healthcare systems, delivering powerful predictive analytics and intelligent automation that empower medical professionals to focus on their primary mission: delivering exceptional patient care.</p>
+
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="counter-1">0</div>
+                            <div class="stat-label">Total Patients</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="counter-2">0</div>
+                            <div class="stat-label">Risks Identified</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="counter-3">0</div>
+                            <div class="stat-label">Client Satisfaction</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Carousel -->
+                <div class="about-carousel swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="{% static 'pages/images/about3.avif' %}" alt="MedCare Team" loading="lazy">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="{% static 'pages/images/about2.jpg' %}" alt="Doctors collaborating" loading="lazy">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="{% static 'pages/images/about1.jpg' %}" alt="Healthcare technology" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!--features-->
+<h2 class="gradient-text " id="features">Features
+    <div class="animated-line"></div>
+</h2>
+
+  <!-- Section 01 -->
+  <section class="eq-block-section from-left">
+    <div class="eq-image-block">
+      <img src="{% static 'pages/images/features1.jpg' %}" alt="Healthcare">
+    </div>
+    <div class="eq-text-block">
+      <div class="eq-block-count">01</div>
+      <div class="eq-main-title">AI-Powered Predictive Analytics</div>
+      <div class="eq-item-description">
+        Leverage machine learning models trained on vast claims and clinical data
+Generate individualized risk scores to assess patient health over 30-, 60-, and 90-day windows.
+Enable proactive care and informed clinical interventions based on these predictions. 
+    </div>
+  </section>
+
+  <!-- Section 02 -->
+  <section class="eq-block-section reverse from-right">
+    <div class="eq-image-block">
+      <img src="{% static 'pages/images/features2.jpg' %}" alt="Preventive Care">
+    </div>
+    <div class="eq-text-block">
+      <div class="eq-block-count">02</div>
+      <div class="eq-main-title"> Intuitive Risk Stratification</div>
+      <div class="eq-item-description">
+       Automatically categorize your entire patient population into five distinct risk tiers.
+Tiers range from Critical to Healthy, reflecting varying levels of health risk.
+Enable precise and efficient allocation of clinical resources based on risk levels.
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 03 -->
+  <section class="eq-block-section from-bottom">
+    <div class="eq-image-block">
+      <img src="{% static 'pages/images/features3.jpg' %}" alt="Follow-up Care">
+    </div>
+    <div class="eq-text-block">
+      <div class="eq-block-count">03</div>
+      <div class="eq-main-title">Automating Follow-up Care</div>
+      <div class="eq-item-description">
+        Through intelligent workflows and reminders, we ensure timely follow-ups, reducing missed appointments and improving adherence to treatment plans for better patient health outcomes.
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 04 -->
+  <section class="eq-block-section reverse from-left">
+    <div class="eq-image-block">
+      <img src="{% static 'pages/images/features4.jpg' %}" alt="Quality Care">
+    </div>
+    <div class="eq-text-block">
+      <div class="eq-block-count">04</div>
+      <div class="eq-main-title">Ensuring Quality Care Assurance</div>
+      <div class="eq-item-description">
+        With continuous monitoring and data validation, we ensure clinical quality benchmarks are met, delivering safe and effective care while minimizing errors and improving patient satisfaction.
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 05 -->
+  <section class="eq-block-section from-right">
+    <div class="eq-image-block">
+      <img src="{% static 'pages/images/features5.jpg' %}" alt="Cost Optimization">
+    </div>
+    <div class="eq-text-block">
+      <div class="eq-block-count">05</div>
+      <div class="eq-main-title">Optimizing Cost Management</div>
+      <div class="eq-item-description">
+        Our advanced analytics identify cost drivers, optimize resource allocation, and measure ROI of interventions, ensuring healthcare organizations achieve financial sustainability while enhancing care delivery.
+      </div>
+    </div>
+  </section>
+
+ <!--Insights-->
+   <section class="insights-section reveal" id="insights">
+        <div class="insights-container">
+            <div class="insights-header">
+               <h2 class="gradient-text ">HealthCare Insights
+    <div class="animated-line"></div>
+</h2>
+                <p class="insights-subtitle">Traditional reactive approaches are no longer sufficient in today's healthcare landscape. Discover how predictive intelligence can transform your outcomes.</p>
+            </div>
+            
+            <div class="problem-solution-container">
+                <div class="problem-column">
+                    <h3 class="column-title">The Problem</h3>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Spiraling Healthcare Costs</h4>
+                            <p>Healthcare expenses continue to rise exponentially, putting strain on providers and payers while reducing quality of care.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Reactive, Not Proactive</h4>
+                            <p>Traditional data analysis only looks backward at historical claims, telling you what already happened rather than predicting what will happen.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-user-injured"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Late Interventions</h4>
+                            <p>By the time a member is admitted to the hospital, the opportunity for cost-effective, preventive care is long gone.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Hidden High-Risk Patients</h4>
+                            <p>While 5% of members drive over 50% of costs, identifying them before they become high-cost remains a critical challenge.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="solution-column">
+                    <h3 class="column-title">The MedCare Solution</h3>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Predictive Intelligence</h4>
+                            <p>Our AI-powered platform analyzes patterns to identify at-risk patients before conditions escalate, enabling early intervention.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-forward"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Proactive Care Management</h4>
+                            <p>Shift from reactive firefighting to preventive care with forward-looking risk assessments and personalized care plans.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Precision Targeting</h4>
+                            <p>Accurately identify the 5% of members who drive over 50% of costs with our sophisticated risk stratification algorithms.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Cost Optimization</h4>
+                            <p>Reduce unnecessary hospitalizations and emergency visits through timely interventions and continuous monitoring.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              <div class="insights-cta">
+                <h3 class="cta-title">Stop Fighting Healthcare Fires Without a Forecast</h3>
+                <p class="cta-subtitle">You need a system that doesn't just report on the past, but actively predicts and helps you prevent the future.</p>
+                <a href="#contact" class="cta-button">Discover Our Solutions</a>
+              </div>
+            </div>
+            </section>
+
+<!--Contact with us-->
+    <section class="contact-container reveal" id="contact">
+        <div class="contact-header">
+            <h1>Get in Touch with MedCare</h1>
+            <p>Have questions about our risk stratification platform? Our team is here to help you transform your care management strategy.</p>
+        </div>
+        
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="info-header">
+                    <h2>Contact Information</h2>
+                    <p>Fill out the form or contact us through other channels</p>
+                </div>
+                
+                <div class="contact-details">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="detail-content">
+                            <h3>Our Location</h3>
+                            <p>123 Healthcare Ave, Medical District<br>Chennai, CA 94110</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="detail-content">
+                            <h3>Phone Number</h3>
+                            <p>91+ 9327711005<br>+1 (415) 555-0123</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="detail-content">
+                            <h3>Email Address</h3>
+                            <p>info@medcare.com<br>support@medcare.com</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <div class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </div>
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <div class="form-header">
+                    <h2>Send Us a Message</h2>
+                    <p>We'll get back to you as soon as possible</p>
+                </div>
+                
+                <form id="contactForm">
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter your name" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="company">Company/Organization</label>
+                        <input type="text" id="company" placeholder="Where do you work?">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" placeholder="How can we help you?" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>About MedCare</h3>
+                <p>MedCare is a leader in healthcare innovation, leveraging cutting-edge AI technology to improve patient care, reduce costs, and streamline operations.</p>
+                <div class="footer-social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Services</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> AI Solutions</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <div class="footer-contact-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>123 Healthcare Ave, Medical District, CA 94103</p>
+                </div>
+                <div class="footer-contact-info">
+                    <i class="fas fa-phone-alt"></i>
+                    <p>+1 (800) 123-4567</p>
+                </div>
+                <div class="footer-contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <p>info@medcare.com</p>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to get updates on our latest healthcare solutions and insights.</p>
+                <form class="footer-newsletter-form">
+                    <input type="email" placeholder="Your email address">
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 MedCare. All Rights Reserved. | Designed for better healthcare</p>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script>
+    // It's best practice to wrap all your JS in one 'DOMContentLoaded' event listener
+    // to make sure the HTML is fully loaded before the script runs.
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // --- INITIALIZATION ---
+        initHeroSwiper();
+        initAboutSwiper();
+        initScrollAnimations();
+        initCounterAnimations();
+        initInsightAnimations();
+        initContactForm();
+        initRevealOnScroll();
+
+        // --- FUNCTIONS ---
+
+        // Hero Swiper initialization
+        function initHeroSwiper() {
+            new Swiper(".slider-one-slide", {
+                slidesPerView: 1,
+                loop: true,
+                speed: 600,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: ".slider-one-slide-next-1",
+                    prevEl: ".slider-one-slide-prev-1",
+                },
+                keyboard: {
+                    enabled: true,
+                    onlyInViewport: true,
+                },
+                effect: "slide",
+            });
+        }
+
+        // About section Swiper initialization
+        function initAboutSwiper() {
+            new Swiper('.about-carousel', {
+                loop: true,
+                autoplay: {
+                    delay: 6000,
+                    disableOnInteraction: false,
+                },
+                effect: 'fade',
+                fadeEffect: {
+                    crossFade: true
+                },
+                speed: 1200,
+            });
+        }
+
+        // Scroll animations for features section
+        function initScrollAnimations() {
+            const sections = document.querySelectorAll('.eq-block-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // Counter animation for stats in About section
+        function initCounterAnimations() {
+            let countersAnimated = false;
+
+            function animateCounter(element, target, duration) {
+                let startTime = null;
+                const startValue = 0;
+                const suffix = target.toString().includes('+') ? '+' : (target.toString().includes('%') ? '%' : '');
+                const numericTarget = parseInt(target);
+                
+                function updateCounter(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = Math.min((timestamp - startTime) / duration, 1);
+                    const currentValue = Math.floor(progress * numericTarget);
+                    
+                    element.textContent = currentValue + suffix;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        element.textContent = numericTarget + suffix;
+                    }
+                }
+                requestAnimationFrame(updateCounter);
+            }
+
+            const aboutSection = document.getElementById('about');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !countersAnimated) {
+                        const counter1 = document.getElementById('counter-1');
+                        const counter2 = document.getElementById('counter-2');
+                        const counter3 = document.getElementById('counter-3');
+                        
+                        if (counter1 && counter2 && counter3) {
+                            animateCounter(counter1, '500+', 2000);
+                            animateCounter(counter2, '70%', 2000);
+                            animateCounter(counter3, '98%', 2000);
+                            countersAnimated = true; // Ensure it only runs once
+                        }
+                    }
+                });
+            }, { threshold: 0.5 }); // Start when 50% of the section is visible
+
+            if (aboutSection) {
+                observer.observe(aboutSection);
+            }
+        }
+
+        // Animations for the Insights section
+        function initInsightAnimations() {
+            const insightItems = document.querySelectorAll('.insight-item');
+            insightItems.forEach(item => {
+                item.style.opacity = 0;
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'all 0.6s ease';
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Find all items within the intersecting container
+                        const itemsToAnimate = entry.target.querySelectorAll('.insight-item');
+                        itemsToAnimate.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.style.opacity = 1;
+                                item.style.transform = 'translateY(0)';
+                            }, index * 150); // Stagger the animation
+                        });
+                        observer.unobserve(entry.target); // Animate only once
+                    }
+                });
+            }, { threshold: 0.2 });
+            
+            // Observe the parent container of the items
+            const problemSolutionContainer = document.querySelector('.problem-solution-container');
+            if(problemSolutionContainer) {
+                observer.observe(problemSolutionContainer);
+            }
+        }
+
+        // Handle the contact form submission
+        function initContactForm() {
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('name').value;
+                    if (!name) return; // Simple validation
+
+                    const submitBtn = this.querySelector('.submit-btn');
+                    const originalBtnHTML = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                    
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                        submitBtn.style.background = 'linear-gradient(90deg, #4CAF50, #2E7D32)';
+                        
+                        setTimeout(() => {
+                            this.reset();
+                            submitBtn.innerHTML = originalBtnHTML;
+                            submitBtn.style.background = ''; // Revert to original style
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+        }
+
+        // Handle the general 'reveal' on scroll animation
+        function initRevealOnScroll() {
+            const reveals = document.querySelectorAll(".reveal");
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            reveals.forEach(reveal => {
+                observer.observe(reveal);
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
+

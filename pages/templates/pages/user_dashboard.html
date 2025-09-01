@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Details - Medical Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'pages/css/patient-details.css' %}"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Minimal Parallax Background -->
+    <div class="parallax-bg">
+      <div class="parallax-layer parallax-layer-1"></div>
+      <div class="parallax-layer parallax-layer-2"></div>
+      <div class="floating-dot"></div>
+      <div class="floating-dot"></div>
+      <div class="floating-dot"></div>
+    </div>
+
+    <div class="dashboard-container">
+      <!-- Top Header -->
+      <header class="header">
+        <div class="header-left">
+          <div class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Dashboard</span>
+          </div>
+        </div>
+        <div class="header-center">
+          <h1>Patient Details</h1>
+        </div>
+        <div class="header-right">
+          <div class="theme-toggle">
+            <i class="fas fa-sun"></i>
+            <div class="toggle-switch" id="themeToggle">
+              <div class="toggle-slider"></div>
+            </div>
+            <i class="fas fa-moon"></i>
+          </div>
+          <i class="fas fa-bell"></i>
+          <i class="fas fa-envelope"></i>
+          <div class="user-profile">
+            <span class="user-name">{{ request.user.get_full_name }}</span>
+            <span class="user-status">Online</span>
+            <div class="user-avatar"></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Patient Overview Section -->
+        <section class="patient-overview">
+          <div class="patient-header">
+            <div class="patient-avatar-large"></div>
+            <div class="patient-info-main">
+              <h2>Sarah Johnson</h2>
+              <p class="patient-id">Member ID: M001</p>
+              <div class="risk-badge very-high">Very High Risk</div>
+              <p class="patient-age">Age: 67 | Gender: Female</p>
+            </div>
+            <div class="patient-actions">
+              <button
+                class="action-btn primary"
+                onclick="scheduleAppointment()"
+              >
+                <i class="fas fa-calendar-plus"></i>
+                Schedule Appointment
+              </button>
+              <button
+                class="action-btn secondary"
+                onclick="assignCareManager()"
+              >
+                <i class="fas fa-user-md"></i>
+                Assign Care Manager
+              </button>
+              <button class="action-btn secondary" onclick="viewReports()">
+                <i class="fas fa-file-medical"></i>
+                View Reports
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+          <!-- Left Column -->
+          <div class="left-column">
+            <!-- Risk Analysis -->
+            <div class="card risk-analysis">
+              <h3><i class="fas fa-chart-line"></i> Risk Analysis</h3>
+              <div class="risk-chart-container">
+                <canvas id="riskChart" width="400" height="200"></canvas>
+              </div>
+              <div class="risk-metrics">
+                <div class="risk-metric">
+                  <span class="metric-label">Risk Score</span>
+                  <span class="metric-value high">0.89</span>
+                </div>
+                <div class="risk-metric">
+                  <span class="metric-label">Prediction Window</span>
+                  <span class="metric-value">30 Days</span>
+                </div>
+                <div class="risk-metric">
+                  <span class="metric-label">Readmission Risk</span>
+                  <span class="metric-value critical">85%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Disease Information -->
+            <div class="card disease-info">
+              <h3><i class="fas fa-disease"></i> Disease Information</h3>
+              <div class="disease-list">
+                <!-- Disease items here -->
+              </div>
+            </div>
+
+            <!-- Medical History -->
+            <div class="card medical-history">
+              <h3><i class="fas fa-history"></i> Medical History</h3>
+              <div class="timeline">
+                <!-- Timeline items here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="right-column">
+            <!-- Alerts Section -->
+            <div class="card alerts-section">
+              <h3><i class="fas fa-exclamation-triangle"></i> Active Alerts</h3>
+              <div class="alert-list">
+                <!-- Alert items here -->
+              </div>
+            </div>
+
+            <!-- Reports Summary -->
+            <div class="card reports-summary">
+              <h3><i class="fas fa-file-medical"></i> Recent Reports</h3>
+              <div class="report-list">
+                <!-- Report items here -->
+              </div>
+            </div>
+
+            <!-- Follow-up Plans -->
+            <div class="card followup-plans">
+              <h3><i class="fas fa-clipboard-list"></i> Follow-up Plans</h3>
+              <div class="plan-list">
+                <!-- Plan items here -->
+              </div>
+            </div>
+
+            <!-- Cost Savings -->
+            <div class="card cost-savings">
+              <h3><i class="fas fa-dollar-sign"></i> Cost Savings Analysis</h3>
+              <div class="savings-overview">
+                <!-- Savings metrics here -->
+              </div>
+              <div class="savings-breakdown">
+                <!-- Breakdown items here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Theme toggle functionality
+      let isDarkMode = false;
+
+      function toggleTheme() {
+        isDarkMode = !isDarkMode;
+        const html = document.documentElement;
+        const toggleSwitch = document.getElementById("themeToggle");
+
+        if (isDarkMode) {
+          html.setAttribute("data-theme", "dark");
+          toggleSwitch.classList.add("active");
+          localStorage.setItem("theme", "dark");
+        } else {
+          html.removeAttribute("data-theme");
+          toggleSwitch.classList.remove("active");
+          localStorage.setItem("theme", "light");
+        }
+
+        // Redraw charts with new theme
+        drawRiskChart();
+      }
+
+      // Initialize theme from localStorage
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem("theme");
+        const toggleSwitch = document.getElementById("themeToggle");
+
+        if (savedTheme === "dark") {
+          isDarkMode = true;
+          document.documentElement.setAttribute("data-theme", "dark");
+          toggleSwitch.classList.add("active");
+        }
+      }
+
+      // Risk chart for patient
+      function drawRiskChart() {
+        const canvas = document.getElementById("riskChart");
+        const ctx = canvas.getContext("2d");
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Get theme colors
+        const isDark = document.documentElement.hasAttribute("data-theme");
+        const gridColor = isDark ? "#404040" : "#e0e0e0";
+        const textColor = isDark ? "#ffffff" : "#333333";
+
+        // Draw axes
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(50, 20);
+        ctx.lineTo(50, 180);
+        ctx.lineTo(350, 180);
+        ctx.stroke();
+
+        // Draw grid lines
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i <= 5; i++) {
+          const y = 20 + i * 32;
+          ctx.beginPath();
+          ctx.moveTo(50, y);
+          ctx.lineTo(350, y);
+          ctx.stroke();
+        }
+
+        // Patient-specific risk data
+        const data = [
+          { label: "Very Low", count: 0, color: "#10b981" },
+          { label: "Low", count: 0, color: "#34d399" },
+          { label: "Medium", count: 0, color: "#fbbf24" },
+          { label: "High", count: 0, color: "#f59e0b" },
+          { label: "Very High", count: 1, color: "#ef4444" },
+        ];
+
+        const barWidth = 45;
+        const spacing = 55;
+        const startX = 70;
+        const maxHeight = 120;
+
+        // Draw bars (only Very High Risk for this patient)
+        data.forEach((item, index) => {
+          const x = startX + index * spacing;
+          const height = item.count > 0 ? maxHeight : 0;
+
+          if (height > 0) {
+            // Draw bar with shadow
+            ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+
+            ctx.fillStyle = item.color;
+            ctx.fillRect(x, 180 - height, barWidth, height);
+
+            ctx.shadowColor = "transparent";
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            // Draw count on top
+            ctx.fillStyle = textColor;
+            ctx.font = "bold 12px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("1", x + barWidth / 2, 175 - height);
+          }
+
+          // Draw labels
+          ctx.fillStyle = textColor;
+          ctx.font = "10px Arial";
+          ctx.textAlign = "center";
+          ctx.fillText(item.label, x + barWidth / 2, 195);
+        });
+
+        // Draw Y-axis labels
+        ctx.fillStyle = textColor;
+        ctx.font = "10px Arial";
+        ctx.textAlign = "right";
+        for (let i = 0; i <= 5; i++) {
+          const y = 180 - i * 32;
+          const value = i;
+          ctx.fillText(value.toString(), 45, y + 4);
+        }
+      }
+
+      // Action functions
+      function goBack() {
+        window.history.back();
+      }
+
+      function scheduleAppointment() {
+        alert("Opening appointment scheduler...");
+      }
+
+      function assignCareManager() {
+        alert("Assigning care manager...");
+      }
+
+      function viewReports() {
+        alert("Opening medical reports...");
+      }
+
+      // Initialize page
+      window.addEventListener("load", function () {
+        initializeTheme();
+        drawRiskChart();
+
+        // Add event listener for theme toggle
+        document
+          .getElementById("themeToggle")
+          .addEventListener("click", toggleTheme);
+      });
+    </script>
+  </body>
+</html>

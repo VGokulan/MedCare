@@ -1,0 +1,1170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Dashboard</title>
+    <link rel="stylesheet" href="{% static 'pages/css/style2.css' %}" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Top Header -->
+      <header class="header">
+        <div class="header-left">
+          <div class="logo">
+            <span class="logo-text">MC</span>
+            <i class="fas fa-ellipsis-v"></i>
+          </div>
+        </div>
+        <div class="header-center">
+          <div class="search-bar">
+            <input type="text" placeholder="Sesarch" />
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="theme-toggle">
+            <i class="fas fa-sun"></i>
+            <div class="toggle-switch" id="themeToggle">
+              <div class="toggle-slider"></div>
+            </div>
+            <i class="fas fa-moon"></i>
+          </div>
+          <i class="fas fa-bell"></i>
+          <i class="fas fa-envelope"></i>
+          <div class="user-profile">
+            <span class="user-name">Patricia Peters</span>
+            <span class="user-status">Online</span>
+            <div class="user-avatar"></div>
+          </div>
+          <i class="fas fa-cog"></i>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <div class="logo">
+              <span class="logo-text">MC</span>
+              <i class="fas fa-ellipsis-v"></i>
+            </div>
+          </div>
+          <nav class="sidebar-nav">
+            <a href="#" class="nav-item active">
+              <i class="fas fa-th-large"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+              <i class="fas fa-user"></i>
+              <span>Your Account</span>
+            </a>
+            <a href="#" class="nav-item">
+              <i class="fas fa-plus"></i>
+              <span>+ Upload Details</span>
+            </a>
+          </nav>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content">
+          <!-- Top Row - Data Cards -->
+          <div class="data-cards">
+            <div class="card">
+              <div class="card-header">
+                <i class="fas fa-users"></i>
+                <h3>Total Members</h3>
+              </div>
+              <div class="card-content">
+                <div class="card-metric">3,380</div>
+                <div class="card-change positive">+8.2%</div>
+                <p class="card-description">
+                  Total healthcare members in the risk stratification system.
+                </p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>High-Risk Members</h3>
+              </div>
+              <div class="card-content">
+                <div class="card-metric">500</div>
+                <div class="card-change positive">-12.5%</div>
+                <p class="card-description">
+                  Members identified as high or very high risk requiring
+                  intervention.
+                </p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <i class="fas fa-chart-line"></i>
+                <h3>Model Accuracy</h3>
+              </div>
+              <div class="card-content">
+                <div class="card-metric">87.3%</div>
+                <div class="card-change positive">+2.1%</div>
+                <p class="card-description">
+                  Prediction accuracy for 30/60/90-day health deterioration
+                  windows.
+                </p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <i class="fas fa-dollar-sign"></i>
+                <h3>Cost Savings</h3>
+              </div>
+              <div class="card-content">
+                <div class="card-metric">$2.4M</div>
+                <div class="card-change positive">+34.2%</div>
+                <p class="card-description">
+                  Total cost savings from preventive interventions and reduced
+                  hospitalizations.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle Row - Graphs -->
+          <div class="graphs-row">
+            <div class="graph-card">
+              <h3>Member Risk Stratification</h3>
+              <div class="graph-container">
+                <canvas id="riskChart" width="400" height="200"></canvas>
+                <div class="graph-legend">
+                  <div class="legend-item">
+                    <span class="legend-dot very-low"></span>
+                    <span>Very Low Risk</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot low"></span>
+                    <span>Low Risk</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot medium"></span>
+                    <span>Medium Risk</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot high"></span>
+                    <span>High Risk</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot very-high"></span>
+                    <span>Very High Risk</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="graph-card">
+              <h3>Prediction Accuracy</h3>
+              <div class="success-metric">
+                <div class="metric-value">87.3%</div>
+                <div class="metric-change positive">+2.1%</div>
+              </div>
+              <div class="graph-container">
+                <canvas id="successChart" width="400" height="150"></canvas>
+              </div>
+              <p class="graph-description">
+                Model accuracy for predicting health deterioration within
+                30/60/90-day windows.
+              </p>
+            </div>
+          </div>
+
+          <!-- Bottom Row - Tables and Calendar -->
+          <div class="bottom-row">
+            <div class="table-card">
+              <div class="table-header">
+                <h3>High-Risk Member Alerts</h3>
+                <p>
+                  Members identified as high-risk requiring immediate
+                  intervention and care management.
+                </p>
+                <div class="time-filters">
+                  <button class="filter-btn active">30 Days</button>
+                  <button class="filter-btn">60 Days</button>
+                  <button class="filter-btn">90 Days</button>
+                  <button class="filter-btn">All Time</button>
+                </div>
+              </div>
+              <div class="table-container">
+                <table class="patient-table">
+                  <thead>
+                    <tr>
+                      <th><input type="checkbox" /></th>
+                      <th>Member ID</th>
+                      <th>Name</th>
+                      <th>Risk Tier</th>
+                      <th>Risk Score</th>
+                      <th>Prediction Window</th>
+                      <th>Top Risk Factors</th>
+                      <th>Intervention Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><input type="checkbox" /></td>
+                      <td>M001</td>
+                      <td>
+                        <div class="patient-info">
+                          <div class="patient-avatar"></div>
+                          <div>
+                            <div
+                              class="patient-name"
+                              onclick="openPatientDetails('M001', 'Sarah Johnson')"
+                              style="
+                                cursor: pointer;
+                                color: var(--accent-color);
+                              "
+                            >
+                              Sarah Johnson
+                            </div>
+                            <div class="patient-room">
+                              Diabetes + Heart Disease
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="risk-tier very-high">Very High</span>
+                      </td>
+                      <td>0.89</td>
+                      <td>30 Days</td>
+                      <td>Recent ER visit, A1c 9.2, BP 180/95</td>
+                      <td>
+                        <span class="intervention-status urgent">Urgent</span>
+                      </td>
+                      <td>
+                        <div class="action-buttons">
+                          <i class="fas fa-phone" title="Call Patient"></i>
+                          <i
+                            class="fas fa-user-md"
+                            title="Assign Care Manager"
+                          ></i>
+                          <i class="fas fa-chart-line" title="View Details"></i>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" /></td>
+                      <td>M002</td>
+                      <td>
+                        <div class="patient-info">
+                          <div class="patient-avatar"></div>
+                          <div>
+                            <div
+                              class="patient-name"
+                              onclick="openPatientDetails('M002', 'Michael Chen')"
+                              style="
+                                cursor: pointer;
+                                color: var(--accent-color);
+                              "
+                            >
+                              Michael Chen
+                            </div>
+                            <div class="patient-room">COPD + Hypertension</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="risk-tier high">High</span></td>
+                      <td>0.76</td>
+                      <td>60 Days</td>
+                      <td>
+                        Multiple hospitalizations, poor medication adherence
+                      </td>
+                      <td>
+                        <span class="intervention-status active"
+                          >In Progress</span
+                        >
+                      </td>
+                      <td>
+                        <div class="action-buttons">
+                          <i class="fas fa-phone" title="Call Patient"></i>
+                          <i
+                            class="fas fa-user-md"
+                            title="Assign Care Manager"
+                          ></i>
+                          <i class="fas fa-chart-line" title="View Details"></i>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="calendar-card">
+              <h3>Intervention ROI Tracking</h3>
+              <div class="roi-summary">
+                <div class="roi-metric">
+                  <div class="roi-value">$2.4M</div>
+                  <div class="roi-label">Cost Savings</div>
+                </div>
+                <div class="roi-metric">
+                  <div class="roi-value">34%</div>
+                  <div class="roi-label">Reduction in Readmissions</div>
+                </div>
+              </div>
+              <div class="intervention-stats">
+                <h4>Recent Interventions</h4>
+                <div class="intervention-item">
+                  <div class="intervention-title">
+                    High-Risk Outreach Program
+                  </div>
+                  <div class="intervention-details">
+                    <span class="members-count">1,247 members</span>
+                    <span class="success-rate">87% success rate</span>
+                  </div>
+                </div>
+                <div class="intervention-item">
+                  <div class="intervention-title">Telehealth Monitoring</div>
+                  <div class="intervention-details">
+                    <span class="members-count">892 members</span>
+                    <span class="success-rate">92% success rate</span>
+                  </div>
+                </div>
+                <div class="intervention-item">
+                  <div class="intervention-title">Medication Adherence</div>
+                  <div class="intervention-details">
+                    <span class="members-count">1,534 members</span>
+                    <span class="success-rate">78% success rate</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      // Theme toggle functionality
+      let isDarkMode = false;
+
+      function toggleTheme() {
+        isDarkMode = !isDarkMode;
+        const html = document.documentElement;
+        const toggleSwitch = document.getElementById("themeToggle");
+
+        if (isDarkMode) {
+          html.setAttribute("data-theme", "dark");
+          toggleSwitch.classList.add("active");
+          localStorage.setItem("theme", "dark");
+        } else {
+          html.removeAttribute("data-theme");
+          toggleSwitch.classList.remove("active");
+          localStorage.setItem("theme", "light");
+        }
+
+        // Redraw charts with new theme
+        drawRiskChart();
+        drawSuccessChart();
+      }
+
+      // Initialize theme from localStorage
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem("theme");
+        const toggleSwitch = document.getElementById("themeToggle");
+
+        if (savedTheme === "dark") {
+          isDarkMode = true;
+          document.documentElement.setAttribute("data-theme", "dark");
+          toggleSwitch.classList.add("active");
+        }
+      }
+
+      // Risk stratification bar chart with animations
+      function drawRiskChart() {
+        const canvas = document.getElementById("riskChart");
+        const ctx = canvas.getContext("2d");
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Get theme colors
+        const isDark = document.documentElement.hasAttribute("data-theme");
+        const gridColor = isDark ? "#404040" : "#e0e0e0";
+        const textColor = isDark ? "#ffffff" : "#333333";
+
+        // Draw axes with animation
+        drawAxes(ctx, gridColor);
+
+        // Risk stratification data (5 tiers)
+        const data = [
+          { label: "Very Low", count: 1250, color: "#10b981" },
+          { label: "Low", count: 980, color: "#34d399" },
+          { label: "Medium", count: 650, color: "#fbbf24" },
+          { label: "High", count: 320, color: "#f59e0b" },
+          { label: "Very High", count: 180, color: "#ef4444" },
+        ];
+
+        const barWidth = 45;
+        const spacing = 55;
+        const startX = 70;
+        const maxHeight = 120;
+        const maxCount = Math.max(...data.map((d) => d.count));
+
+        // Animate bars
+        animateBars(
+          ctx,
+          data,
+          startX,
+          spacing,
+          barWidth,
+          maxHeight,
+          maxCount,
+          textColor
+        );
+      }
+
+      // Draw axes with fade-in animation
+      function drawAxes(ctx, gridColor) {
+        // Fade in axes
+        let opacity = 0;
+        const fadeIn = setInterval(() => {
+          opacity += 0.05;
+          ctx.globalAlpha = opacity;
+
+          // Draw axes
+          ctx.strokeStyle = gridColor;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(50, 20);
+          ctx.lineTo(50, 180);
+          ctx.lineTo(350, 180);
+          ctx.stroke();
+
+          // Draw grid lines
+          ctx.strokeStyle = gridColor;
+          ctx.lineWidth = 0.5;
+          for (let i = 0; i <= 5; i++) {
+            const y = 20 + i * 32;
+            ctx.beginPath();
+            ctx.moveTo(50, y);
+            ctx.lineTo(350, y);
+            ctx.stroke();
+          }
+
+          if (opacity >= 1) {
+            clearInterval(fadeIn);
+            ctx.globalAlpha = 1;
+            drawYAxisLabels(ctx, gridColor);
+          }
+        }, 50);
+      }
+
+      // Draw Y-axis labels
+      function drawYAxisLabels(ctx, gridColor) {
+        const isDark = document.documentElement.hasAttribute("data-theme");
+        const textColor = isDark ? "#ffffff" : "#333333";
+
+        ctx.fillStyle = textColor;
+        ctx.font = "10px Arial";
+        ctx.textAlign = "right";
+
+        // Animate Y-axis labels
+        let labelOpacity = 0;
+        const labelInterval = setInterval(() => {
+          labelOpacity += 0.1;
+          ctx.globalAlpha = labelOpacity;
+
+          for (let i = 0; i <= 5; i++) {
+            const y = 180 - i * 32;
+            const value = Math.round((i * 1250) / 5);
+            ctx.fillText(value.toString(), 45, y + 4);
+          }
+
+          if (labelOpacity >= 1) {
+            clearInterval(labelInterval);
+            ctx.globalAlpha = 1;
+          }
+        }, 100);
+      }
+
+      // Animate bars with growth effect
+      function animateBars(
+        ctx,
+        data,
+        startX,
+        spacing,
+        barWidth,
+        maxHeight,
+        maxCount,
+        textColor
+      ) {
+        let currentHeight = 0;
+        const targetHeight = maxHeight;
+        const animationSpeed = 0.05;
+
+        const animate = () => {
+          if (currentHeight < targetHeight) {
+            currentHeight += (targetHeight - currentHeight) * animationSpeed;
+
+            // Clear chart area
+            ctx.clearRect(70, 20, 280, 160);
+
+            // Draw bars with current height
+            data.forEach((item, index) => {
+              const x = startX + index * spacing;
+              const height = (item.count / maxCount) * currentHeight;
+
+              // Draw bar with shadow effect
+              drawBarWithShadow(
+                ctx,
+                x,
+                180 - height,
+                barWidth,
+                height,
+                item.color
+              );
+
+              // Draw animated count
+              if (currentHeight > 0) {
+                const animatedCount = Math.round(
+                  (item.count / maxCount) *
+                    currentHeight *
+                    (maxCount / maxHeight)
+                );
+                drawAnimatedCount(
+                  ctx,
+                  x + barWidth / 2,
+                  175 - height,
+                  animatedCount,
+                  textColor
+                );
+              }
+
+              // Draw labels
+              ctx.fillStyle = textColor;
+              ctx.font = "9px Arial";
+              ctx.textAlign = "center";
+              ctx.fillText(item.label, x + barWidth / 2, 195);
+            });
+
+            requestAnimationFrame(animate);
+          } else {
+            // Final draw with full height
+            data.forEach((item, index) => {
+              const x = startX + index * spacing;
+              const height = (item.count / maxCount) * maxHeight;
+
+              drawBarWithShadow(
+                ctx,
+                x,
+                180 - height,
+                barWidth,
+                height,
+                item.color
+              );
+              drawAnimatedCount(
+                ctx,
+                x + barWidth / 2,
+                175 - height,
+                item.count,
+                textColor
+              );
+
+              // Draw labels
+              ctx.fillStyle = textColor;
+              ctx.font = "9px Arial";
+              ctx.textAlign = "center";
+              ctx.fillText(item.label, x + barWidth / 2, 195);
+            });
+
+            // Add hover effects
+            addChartInteractivity(
+              canvas,
+              data,
+              startX,
+              spacing,
+              barWidth,
+              maxHeight,
+              maxCount,
+              textColor
+            );
+          }
+        };
+
+        animate();
+      }
+
+      // Draw bar with shadow effect
+      function drawBarWithShadow(ctx, x, y, width, height, color) {
+        // Shadow
+        ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+
+        // Bar
+        ctx.fillStyle = color;
+        ctx.fillRect(x, y, width, height);
+
+        // Reset shadow
+        ctx.shadowColor = "transparent";
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
+        // Add gradient effect
+        const gradient = ctx.createLinearGradient(x, y, x, y + height);
+        gradient.addColorStop(0, color);
+        gradient.addColorStop(1, adjustBrightness(color, -20));
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x, y, width, height);
+      }
+
+      // Adjust color brightness
+      function adjustBrightness(color, percent) {
+        const num = parseInt(color.replace("#", ""), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) + amt;
+        const G = ((num >> 8) & 0x00ff) + amt;
+        const B = (num & 0x0000ff) + amt;
+        return (
+          "#" +
+          (
+            0x1000000 +
+            (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+            (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+            (B < 255 ? (B < 1 ? 0 : B) : 255)
+          )
+            .toString(16)
+            .slice(1)
+        );
+      }
+
+      // Draw animated count with bounce effect
+      function drawAnimatedCount(ctx, x, y, count, textColor) {
+        ctx.fillStyle = textColor;
+        ctx.font = "bold 10px Arial";
+        ctx.textAlign = "center";
+
+        // Add bounce effect
+        const bounce = Math.sin(Date.now() * 0.01) * 2;
+        ctx.fillText(count.toString(), x, y + bounce);
+      }
+
+      // Add chart interactivity
+      function addChartInteractivity(
+        canvas,
+        data,
+        startX,
+        spacing,
+        barWidth,
+        maxHeight,
+        maxCount,
+        textColor
+      ) {
+        const ctx = canvas.getContext("2d");
+
+        canvas.addEventListener("mousemove", function (e) {
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          // Check if mouse is over a bar
+          data.forEach((item, index) => {
+            const barX = startX + index * spacing;
+            const barY = 180 - (item.count / maxCount) * maxHeight;
+            const barHeight = (item.count / maxCount) * maxHeight;
+
+            if (
+              x >= barX &&
+              x <= barX + barWidth &&
+              y >= barY &&
+              y <= barY + barHeight
+            ) {
+              // Highlight bar
+              drawHighlightedBar(
+                ctx,
+                barX,
+                barY,
+                barWidth,
+                barHeight,
+                item.color,
+                item.count,
+                textColor
+              );
+
+              // Show tooltip
+              showChartTooltip(e.clientX, e.clientY, item.label, item.count);
+            }
+          });
+        });
+
+        canvas.addEventListener("mouseleave", function () {
+          // Redraw chart without highlights
+          drawRiskChart();
+        });
+      }
+
+      // Draw highlighted bar
+      function drawHighlightedBar(
+        ctx,
+        x,
+        y,
+        width,
+        height,
+        color,
+        count,
+        textColor
+      ) {
+        // Clear area
+        ctx.clearRect(x - 2, y - 2, width + 4, height + 4);
+
+        // Draw highlighted bar
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x, y, width, height);
+
+        // Redraw bar
+        drawBarWithShadow(ctx, x, y, width, height, color);
+
+        // Redraw count
+        drawAnimatedCount(ctx, x + width / 2, y - 5, count, textColor);
+      }
+
+      // Show chart tooltip
+      function showChartTooltip(x, y, label, count) {
+        // Remove existing tooltip
+        const existingTooltip = document.querySelector(".chart-tooltip");
+        if (existingTooltip) {
+          existingTooltip.remove();
+        }
+
+        // Create tooltip
+        const tooltip = document.createElement("div");
+        tooltip.className = "chart-tooltip";
+        tooltip.innerHTML = `
+                <strong>${label}</strong><br>
+                Count: ${count.toLocaleString()}
+            `;
+        tooltip.style.cssText = `
+                position: fixed;
+                left: ${x + 10}px;
+                top: ${y - 40}px;
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                pointer-events: none;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            `;
+
+        document.body.appendChild(tooltip);
+      }
+
+      function drawSuccessChart() {
+        const canvas = document.getElementById("successChart");
+        const ctx = canvas.getContext("2d");
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Get theme colors
+        const isDark = document.documentElement.hasAttribute("data-theme");
+        const gridColor = isDark ? "#404040" : "#e0e0e0";
+        const textColor = isDark ? "#ffffff" : "#333333";
+
+        // Draw axes
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(50, 20);
+        ctx.lineTo(50, 130);
+        ctx.lineTo(350, 130);
+        ctx.stroke();
+
+        // Draw grid lines
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i <= 4; i++) {
+          const y = 20 + i * 27.5;
+          ctx.beginPath();
+          ctx.moveTo(50, y);
+          ctx.lineTo(350, y);
+          ctx.stroke();
+        }
+
+        // Draw blue line with circles
+        ctx.strokeStyle = "#0066cc";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(50, 100);
+        ctx.lineTo(100, 85);
+        ctx.lineTo(150, 70);
+        ctx.lineTo(200, 55);
+        ctx.lineTo(250, 40);
+        ctx.lineTo(300, 25);
+        ctx.lineTo(350, 10);
+        ctx.stroke();
+
+        // Draw circles at data points
+        ctx.fillStyle = "#0066cc";
+        const points = [
+          [50, 100],
+          [100, 85],
+          [150, 70],
+          [200, 55],
+          [250, 40],
+          [300, 25],
+          [350, 10],
+        ];
+        points.forEach((point) => {
+          ctx.beginPath();
+          ctx.arc(point[0], point[1], 3, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+
+        // Draw Y-axis labels
+        ctx.fillStyle = textColor;
+        ctx.font = "10px Arial";
+        ctx.textAlign = "right";
+        for (let i = 0; i <= 4; i++) {
+          const y = 130 - i * 27.5;
+          const value = i * 25;
+          ctx.fillText(value + "%", 45, y + 4);
+        }
+      }
+
+      // Button functionality
+      function initializeButtons() {
+        // Header buttons
+        document
+          .querySelector(".fa-bell")
+          .addEventListener("click", function () {
+            showNotification("You have 3 new notifications");
+          });
+
+        document
+          .querySelector(".fa-envelope")
+          .addEventListener("click", function () {
+            showNotification("You have 2 unread messages");
+          });
+
+        document
+          .querySelector(".fa-cog")
+          .addEventListener("click", function () {
+            showNotification("Settings panel opened");
+          });
+
+        // Search functionality
+        const searchInput = document.querySelector(".search-bar input");
+        searchInput.addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          filterTable(searchTerm);
+        });
+
+        // Sidebar navigation
+        const navItems = document.querySelectorAll(".nav-item");
+        navItems.forEach((item) => {
+          item.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // Remove active class from all items
+            navItems.forEach((nav) => nav.classList.remove("active"));
+
+            // Add active class to clicked item
+            this.classList.add("active");
+
+            const text = this.querySelector("span").textContent;
+            showNotification(`Navigated to: ${text}`);
+          });
+        });
+
+        // Time filter buttons
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            // Remove active class from all buttons
+            filterButtons.forEach((btn) => btn.classList.remove("active"));
+
+            // Add active class to clicked button
+            this.classList.add("active");
+
+            const filter = this.textContent;
+            filterTableByTime(filter);
+            showNotification(`Filtered by: ${filter}`);
+          });
+        });
+
+        // Action buttons in table
+        const actionButtons = document.querySelectorAll(".action-buttons i");
+        actionButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const action = this.getAttribute("title");
+            const row = this.closest("tr");
+            const memberId = row.querySelector("td:nth-child(2)").textContent;
+            const memberName = row.querySelector(".patient-name").textContent;
+
+            handleAction(action, memberId, memberName);
+          });
+        });
+
+        // Card interactions
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card) => {
+          card.addEventListener("click", function () {
+            const title = this.querySelector("h3").textContent;
+            showCardDetails(title);
+          });
+        });
+
+        // Intervention items
+        const interventionItems =
+          document.querySelectorAll(".intervention-item");
+        interventionItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            const title = this.querySelector(".intervention-title").textContent;
+            showInterventionDetails(title);
+          });
+        });
+      }
+
+      // Notification system
+      function showNotification(message) {
+        // Create notification element
+        const notification = document.createElement("div");
+        notification.className = "notification";
+        notification.textContent = message;
+        notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--accent-color);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                font-size: 14px;
+            `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+          notification.style.transform = "translateX(0)";
+        }, 100);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+          notification.style.transform = "translateX(100%)";
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+      }
+
+      // Table filtering
+      function filterTable(searchTerm) {
+        const rows = document.querySelectorAll(".patient-table tbody tr");
+
+        rows.forEach((row) => {
+          const text = row.textContent.toLowerCase();
+          if (text.includes(searchTerm)) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      }
+
+      function filterTableByTime(filter) {
+        // Simulate filtering by time period
+        const rows = document.querySelectorAll(".patient-table tbody tr");
+
+        rows.forEach((row) => {
+          const predictionWindow =
+            row.querySelector("td:nth-child(6)").textContent;
+
+          if (
+            filter === "All Time" ||
+            predictionWindow.includes(filter.split(" ")[0])
+          ) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      }
+
+      // Action handling
+      function handleAction(action, memberId, memberName) {
+        switch (action) {
+          case "Call Patient":
+            showNotification(`Initiating call to ${memberName} (${memberId})`);
+            break;
+          case "Assign Care Manager":
+            showNotification(
+              `Care manager assigned to ${memberName} (${memberId})`
+            );
+            break;
+          case "View Details":
+            // Navigate to patient details page
+            window.location.href = `patient-details.html?patient=${memberId}&name=${encodeURIComponent(
+              memberName
+            )}`;
+            break;
+        }
+      }
+
+      // Card details
+      function showCardDetails(title) {
+        const details = {
+          "Total Members":
+            "Detailed breakdown of member demographics, enrollment trends, and geographic distribution.",
+          "High-Risk Members":
+            "Risk factors analysis, intervention history, and care management status.",
+          "Model Accuracy":
+            "Performance metrics, validation results, and prediction confidence intervals.",
+          "Cost Savings":
+            "ROI analysis, cost breakdown by intervention type, and projected savings.",
+        };
+
+        showModal(title, details[title] || "Details not available");
+      }
+
+      // Intervention details
+      function showInterventionDetails(title) {
+        const details = {
+          "High-Risk Outreach Program":
+            "Program overview, success metrics, and participant outcomes.",
+          "Telehealth Monitoring":
+            "Technology platform, monitoring protocols, and patient engagement rates.",
+          "Medication Adherence":
+            "Adherence tracking methods, intervention strategies, and improvement rates.",
+        };
+
+        showModal(title, details[title] || "Details not available");
+      }
+
+      // Member details
+      function showMemberDetails(memberId, memberName) {
+        const details = `
+                <strong>Member ID:</strong> ${memberId}<br>
+                <strong>Name:</strong> ${memberName}<br>
+                <strong>Risk Score:</strong> 0.89<br>
+                <strong>Prediction Window:</strong> 30 Days<br>
+                <strong>Risk Factors:</strong> Recent ER visit, A1c 9.2, BP 180/95<br>
+                <strong>Intervention Status:</strong> Urgent<br>
+                <strong>Care Plan:</strong> Intensive monitoring, medication adjustment, lifestyle counseling
+            `;
+
+        showModal(`Member Details - ${memberName}`, details);
+      }
+
+      // Modal system
+      function showModal(title, content) {
+        // Create modal overlay
+        const overlay = document.createElement("div");
+        overlay.className = "modal-overlay";
+        overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+
+        // Create modal content
+        const modal = document.createElement("div");
+        modal.className = "modal";
+        modal.style.cssText = `
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+                padding: 2rem;
+                border-radius: 12px;
+                max-width: 500px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+                transform: scale(0.9);
+                transition: transform 0.3s ease;
+            `;
+
+        modal.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="margin: 0; color: var(--accent-color);">${title}</h3>
+                    <button onclick="this.closest('.modal-overlay').remove()" style="
+                        background: none;
+                        border: none;
+                        font-size: 1.5rem;
+                        cursor: pointer;
+                        color: var(--text-secondary);
+                        padding: 0;
+                        width: 30px;
+                        height: 30px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    ">&times;</button>
+                </div>
+                <div style="line-height: 1.6;">${content}</div>
+            `;
+
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+
+        // Animate in
+        setTimeout(() => {
+          overlay.style.opacity = "1";
+          modal.style.transform = "scale(1)";
+        }, 10);
+
+        // Close on overlay click
+        overlay.addEventListener("click", function (e) {
+          if (e.target === overlay) {
+            overlay.remove();
+          }
+        });
+      }
+
+      // Open patient details page
+      function openPatientDetails(patientId, patientName) {
+        window.location.href = `patient-details.html?patient=${patientId}&name=${encodeURIComponent(
+          patientName
+        )}`;
+      }
+
+      // Initialize charts when page loads
+      window.addEventListener("load", function () {
+        initializeTheme();
+        drawRiskChart();
+        drawSuccessChart();
+        initializeButtons();
+
+        // Add event listener for theme toggle
+        document
+          .getElementById("themeToggle")
+          .addEventListener("click", toggleTheme);
+      });
+    </script>
+  </body>
+</html>
