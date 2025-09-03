@@ -580,6 +580,8 @@ body {
 
 .about-text {
   flex: 1 1 50%;
+  /* REMOVED opacity and transform to make it visible by default */
+  transition: all 0.8s ease;
 }
 
 .about-text .section-title {
@@ -663,10 +665,8 @@ body {
   max-width: 550px;
   border-radius: 20px;
   overflow: hidden;
-
   position: relative;
-  opacity: 0;
-  transform: translateX(50px);
+  /* REMOVED opacity and transform to make it visible by default */
   transition: all 0.8s ease;
 }
 
@@ -736,7 +736,6 @@ body {
 .about-carousel .swiper-pagination-bullet {
   width: 14px;
   height: 14px;
-
   opacity: 1;
   transition: all 0.3s ease;
 }
@@ -759,13 +758,7 @@ body {
   opacity: 1;
 }
 
-/* Text animation */
-.about-text {
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: all 0.8s ease;
-}
-
+/* Rules for the animation if you add the JS later */
 .about-text.animated {
   opacity: 1;
   transform: translateX(0);
@@ -811,7 +804,7 @@ body {
   }
 
   .about-text {
-    transform: translateY(50px);
+    transform: translateY(0); /* Corrected for mobile */
   }
 
   .about-text.animated {
@@ -873,7 +866,6 @@ body {
 
 .insights-section {
   padding: 100px 5%;
-
   position: relative;
 }
 

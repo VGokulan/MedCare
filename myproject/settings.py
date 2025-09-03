@@ -130,3 +130,12 @@ AUTH_USER_MODEL = 'pages.CustomUser'
 AUTHENTICATION_BACKENDS = [
     "pages.backends.EmailBackend",  # our custom backend
 ]
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True  # For secure connection
+EMAIL_HOST_USER = 'ragulroshan45@gmail.com'  # <-- The Gmail account you generated the App Password for
+EMAIL_HOST_PASSWORD = 'ehah qzmh cikb yyri'  # <-- Paste the App Password here
+
+# (Optional but recommended) The default "from" email address
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
