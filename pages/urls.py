@@ -16,7 +16,6 @@ urlpatterns = [
 
     # Logout
     path('logout/', views.user_logout, name='logout'),
-    path('admin-logout/', views.admin_logout, name='admin_logout'),
 
 
     # Dashboards

@@ -74,16 +74,16 @@ WSGI_APPLICATION = "myproject.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-     "default": {
+    "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",  # <-- Replace with your database name
-        "USER": "postgres",  # <-- Replace with your database username
-        "PASSWORD": "ragul",  # <-- Replace with your database password
-        "HOST": "localhost",  # Or your DB host
-        "PORT": "5432",      # Default PostgreSQL port
+        "NAME": "postgres",                            # From your PGDATABASE variable
+        "USER": "medical",                             # From your PGUSER variable
+        "PASSWORD": "Cts123456",                       # From your PGPWORD variable
+        "HOST": "medcare.postgres.database.azure.com", # From your PGHOST variable
+        "PORT": "5432",                                # From your PGPORT variable
     }
-    
 }
+
 
 
 # Password validation
@@ -128,7 +128,8 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'pages.CustomUser'
 AUTHENTICATION_BACKENDS = [
-    "pages.backends.EmailBackend",  # our custom backend
+    'pages.backends.EmailBackend',  # Our custom email backend
+    'django.contrib.auth.backends.ModelBackend', # The default username backend
 ]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
