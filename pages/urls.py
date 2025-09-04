@@ -11,6 +11,7 @@ urlpatterns = [
     # Form POST handlers
     path('user_signup/', views.user_signup, name='user_signup'),
     path('user_login/', views.user_login, name='user_login'),
+
     path('admin_login/', views.admin_login, name='admin_login'),
     path('contact-submission/', views.contact_submission, name='contact_submission'),
 
@@ -22,6 +23,7 @@ urlpatterns = [
     # Dashboards
     path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('upload/', views.upload_data, name='upload_data'),
 
     
 ]

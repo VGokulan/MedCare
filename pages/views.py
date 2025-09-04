@@ -6,6 +6,8 @@ from .models import CustomUser, PatientAnalysis # Make sure to import PatientAna
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import JsonResponse
+from django.core.paginator import Paginator # Import Django's Paginator
+from django.db.models import Q 
 
 
 
@@ -102,34 +104,82 @@ def user_dashboard(request):
 
 @login_required
 def admin_dashboard(request):
+    """
+    Displays the admin dashboard with filtering, searching, and pagination.
+    """
     if not request.user.is_staff:
-        messages.error(request, "You do not have permission to access this page.")
         return redirect('user_dashboard')
 
-    try:
-        search = request.GET.get('search', '')
-        risk_level = request.GET.get('risk_level', '')
-        status = request.GET.get('status', '')
-        age_range = request.GET.get('age_range', '')
+    # --- Step 1: Filtering Logic ---
+    search_query = request.GET.get('search', '')
+    risk_tier_query = request.GET.get('risk_tier', '')
 
-        patients = get_patient_list(search, risk_level, status, age_range)
-        filter_options = get_patient_filters()
+    # Start with all patients, using the default ordering from the model
+    patient_list = PatientAnalysis.objects.all()
 
-        return render(request, 'pages/admin_dashboard.html', {
-    'patients': patients,
-    'filter_options': filter_options,
-    'current_filters': {
-        'search': search,
-        'risk_level': risk_level,
-        'status': status,
-        'age_range': age_range
+    if search_query:
+        # --- Step 2: Database Query ---
+        # Use a Q object to search across multiple fields (ID and age)
+        search_filter = Q(desynpuf_id__icontains=search_query)
+        if search_query.isnumeric():
+            search_filter |= Q(age=search_query)
+        patient_list = patient_list.filter(search_filter)
+
+    if risk_tier_query:
+        # Filter by the selected risk tier
+        patient_list = patient_list.filter(risk_tier=risk_tier_query)
+
+    # --- Step 3: Pagination Logic ---
+    paginator = Paginator(patient_list, 10) # Show 10 patients per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # --- Context Data for the Template ---
+    context = {
+        'page_obj': page_obj,  # Pass the paginated page object to the template
+        'current_user': request.user,
+        'filter_options': {
+            'risk_tiers': PatientAnalysis.RISK_TIER_CHOICES,
+        },
+        'current_filters': {
+            'search': search_query,
+            'risk_tier': risk_tier_query,
+        }
     }
-})
+    return render(request, 'pages/admin_dashboard.html', context)
 
-    except Exception as e:
-        return render(request, 'pages/error.html', {'error': str(e)})
+    # try:
+       
 
+    # except Exception as e:
+    #     return render(request, 'pages/error.html', {'error': str(e)})
 
+@login_required
+def upload_data(request):
+    """
+    Handles displaying the upload form and processing the submitted data.
+    """
+    if not request.user.is_staff:
+        # Security check
+        return redirect('user_dashboard')
+
+    if request.method == 'POST':
+        # This is where you would connect to your ML model's prediction function.
+        # For now, we'll simulate a successful response.
+        simulated_results = {
+            "risk_tier": 2,
+            "risk_tier_label": "High Risk",
+            "risk_30d_hospitalization": 0.15,
+            "risk_60d_hospitalization": 0.25,
+            "risk_90d_hospitalization": 0.35,
+            "mortality_risk": 0.10,
+            # ... other result fields
+        }
+        return JsonResponse(simulated_results)
+
+    # For a GET request, just render the page.
+    context = {'user': request.user}
+    return render(request, 'pages/upload.html', context)
 
 
 def get_patient_list(search='', risk_level='', status='', age_range=''):
@@ -155,7 +205,7 @@ def get_patient_list(search='', risk_level='', status='', age_range=''):
         except ValueError:
             pass
 
-    return patients
+    return patients[:150]
 
 
 def get_patient_filters():

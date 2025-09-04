@@ -44,15 +44,75 @@ class Admin(models.Model):
         return self.email
     
 class PatientAnalysis(models.Model):
-    desynpuf_id = models.CharField(max_length=50, primary_key=True)
+    # ... (all your existing fields remain the same)
+    desynpuf_id = models.CharField(primary_key=True, max_length=255)
     age = models.IntegerField()
     gender_male = models.BooleanField()
+    race_white = models.BooleanField()
+    race_black = models.BooleanField()
     chronic_condition_count = models.IntegerField()
-    total_medicare_costs = models.FloatField()
-    risk_tier_label = models.CharField(max_length=50)
-    hospitalization_30d_score = models.FloatField()
+    high_impact_conditions = models.TextField(blank=True, null=True)
+    sp_chf = models.BooleanField()
+    sp_diabetes = models.BooleanField()
+    sp_chrnkidn = models.BooleanField()
+    sp_cncr = models.BooleanField()
+    sp_copd = models.BooleanField()
+    sp_depressn = models.BooleanField()
+    sp_ischmcht = models.BooleanField()
+    sp_strketia = models.BooleanField()
+    sp_alzhdmta = models.BooleanField()
+    sp_osteoprs = models.BooleanField()
+    sp_ra_oa = models.BooleanField()
+    inpatient_admissions = models.IntegerField()
+    inpatient_days = models.IntegerField()
+    outpatient_visits = models.IntegerField()
+    total_medicare_costs = models.DecimalField(max_digits=10, decimal_places=2)
     prior_hospitalization = models.BooleanField()
-    care_intervention = models.CharField(max_length=50, null=True, blank=True)
+    risk_30d_hospitalization = models.FloatField()
+    risk_60d_hospitalization = models.FloatField()
+    risk_90d_hospitalization = models.FloatField()
+    mortality_risk = models.FloatField()
+    RISK_TIER_CHOICES = [('1', 'Critical'), ('2', 'High'), ('3', 'Medium'), ('4', 'Low'), ('5', 'Healthy')]
+    risk_tier = models.CharField(max_length=10, choices=RISK_TIER_CHOICES)
+    risk_tier_label = models.CharField(max_length=50) 
+    care_intervention = models.TextField(blank=True, null=True)
+    annual_intervention_cost = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    cost_savings = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    prevented_hospitalizations = models.IntegerField(null=True, blank=True)
+    
+    # --- NEW HELPER METHODS ---
+    
+    @property
+    def patient_name(self):
+        """
+        Returns a display name for the patient.
+        In a real system, this might look up a name from another table.
+        For now, we'll format the ID.
+        """
+        # A placeholder for real names. You can customize this logic.
+        # For now, we return a formatted version of the ID.
+        return f"Patient {self.desynpuf_id[:8]}"
+
+    def get_conditions_display(self):
+        """
+        Creates a comma-separated string of the patient's chronic conditions.
+        """
+        conditions = []
+        if self.sp_chf: conditions.append("CHF")
+        if self.sp_diabetes: conditions.append("Diabetes")
+        if self.sp_chrnkidn: conditions.append("Chronic Kidney")
+        if self.sp_cncr: conditions.append("Cancer")
+        if self.sp_copd: conditions.append("COPD")
+        if self.sp_depressn: conditions.append("Depression")
+        if self.sp_ischmcht: conditions.append("Ischemic Heart")
+        if self.sp_strketia: conditions.append("Stroke/TIA")
+        if self.sp_alzhdmta: conditions.append("Alzheimer's")
+        if self.sp_osteoprs: conditions.append("Osteoporosis")
+        if self.sp_ra_oa: conditions.append("RA/OA")
+        
+        return ", ".join(conditions) if conditions else "None"
 
     class Meta:
-        db_table = 'patient_analysis' 
+        managed = False
+        db_table = 'patient_analysis'
+        ordering = ['-risk_tier', '-risk_90d_hospitalization']
