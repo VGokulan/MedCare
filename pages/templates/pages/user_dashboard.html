@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Patient Details - Medical Dashboard</title>
+    <title>User Dashboard - Medical Care</title>
     <link
       rel="stylesheet"
       href="{% static 'pages/css/patient-details.css' %}"
@@ -15,26 +15,25 @@
     />
   </head>
   <body>
-    <!-- Minimal Parallax Background -->
-    <div class="parallax-bg">
-      <div class="parallax-layer parallax-layer-1"></div>
-      <div class="parallax-layer parallax-layer-2"></div>
-      <div class="floating-dot"></div>
-      <div class="floating-dot"></div>
-      <div class="floating-dot"></div>
-    </div>
-
     <div class="dashboard-container">
       <!-- Top Header -->
       <header class="header">
         <div class="header-left">
-          <div class="back-button" onclick="goBack()">
-            <i class="fas fa-arrow-left"></i>
-            <span>Back to Dashboard</span>
+          <div class="patient-info-header">
+            <div class="patient-avatar-large">
+              <!-- Use the user's first name initial for the placeholder -->
+              <div class="initial">{{ user.first_name|first|default:"U" }}</div>
+            </div>
+            <div class="patient-basic-info">
+              <h2>John Doe</h2>
+              <p>Patient ID: P12345</p>
+              <p>Age: 68 | Gender: Male</p>
+              <span class="patient-status">Active Patient</span>
+            </div>
           </div>
         </div>
         <div class="header-center">
-          <h1>Patient Details</h1>
+          <h1>My Health Dashboard</h1>
         </div>
         <div class="header-right">
           <div class="theme-toggle">
@@ -47,285 +46,981 @@
           <i class="fas fa-bell"></i>
           <i class="fas fa-envelope"></i>
           <div class="user-profile">
-            <span class="user-name">{{ request.user.get_full_name }}</span>
-            <span class="user-status">Online</span>
             <div class="user-avatar"></div>
+            <div>
+              <div class="user-name">John Doe</div>
+              <div class="user-status">Online</div>
+            </div>
           </div>
         </div>
       </header>
 
       <!-- Main Content -->
       <div class="main-content">
-        <!-- Patient Overview Section -->
-        <section class="patient-overview">
-          <div class="patient-header">
-            <div class="patient-avatar-large"></div>
-            <div class="patient-info-main">
-              <h2>Sarah Johnson</h2>
-              <p class="patient-id">Member ID: M001</p>
-              <div class="risk-badge very-high">Very High Risk</div>
-              <p class="patient-age">Age: 67 | Gender: Female</p>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-section="overview">
+              <i class="fas fa-home"></i>
+              <span>Overview</span>
+            </a>
+            <a href="#" class="nav-item" data-section="care-plan">
+              <i class="fas fa-heart"></i>
+              <span>Care Plan</span>
+            </a>
+            <a href="#" class="nav-item" data-section="medications">
+              <i class="fas fa-pills"></i>
+              <span>Medications</span>
+            </a>
+            <a href="#" class="nav-item" data-section="appointments">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Appointments</span>
+            </a>
+            <a href="#" class="nav-item" data-section="medical-history">
+              <i class="fas fa-history"></i>
+              <span>Medical History</span>
+            </a>
+            <a href="#" class="nav-item" data-section="chat">
+              <i class="fas fa-comments"></i>
+              <span>AI Health Assistant</span>
+            </a>
+          </nav>
+        </aside>
+
+        <main class="content">
+          <!-- Overview Section -->
+          <section id="overview" class="dashboard-section active">
+            <div class="section-header">
+              <h2><i class="fas fa-tachometer-alt"></i> Health Overview</h2>
+              <p>
+                Welcome back! Here's a summary of your current health status and
+                recent activities.
+              </p>
             </div>
-            <div class="patient-actions">
-              <button
-                class="action-btn primary"
-                onclick="scheduleAppointment()"
-              >
-                <i class="fas fa-calendar-plus"></i>
-                Schedule Appointment
+
+            <!-- High Risk Alert Banner -->
+            <div class="alert-banner high-risk" id="riskAlert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <div class="alert-content">
+                <h3>Readmission Risk Alert</h3>
+                <p>
+                  Based on recent health indicators, please schedule a follow-up
+                  appointment within the next 2 weeks.
+                </p>
+              </div>
+              <button class="alert-close" onclick="closeAlert()">
+                <i class="fas fa-times"></i>
               </button>
-              <button
-                class="action-btn secondary"
-                onclick="assignCareManager()"
-              >
-                <i class="fas fa-user-md"></i>
-                Assign Care Manager
-              </button>
-              <button class="action-btn secondary" onclick="viewReports()">
-                <i class="fas fa-file-medical"></i>
-                View Reports
-              </button>
             </div>
-          </div>
-        </section>
 
-        <!-- Main Content Grid -->
-        <div class="content-grid">
-          <!-- Left Column -->
-          <div class="left-column">
-            <!-- Risk Analysis -->
-            <div class="card risk-analysis">
-              <h3><i class="fas fa-chart-line"></i> Risk Analysis</h3>
-              <div class="risk-chart-container">
-                <canvas id="riskChart" width="400" height="200"></canvas>
-              </div>
-              <div class="risk-metrics">
-                <div class="risk-metric">
-                  <span class="metric-label">Risk Score</span>
-                  <span class="metric-value high">0.89</span>
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-heartbeat"></i>
                 </div>
-                <div class="risk-metric">
-                  <span class="metric-label">Prediction Window</span>
-                  <span class="metric-value">30 Days</span>
-                </div>
-                <div class="risk-metric">
-                  <span class="metric-label">Readmission Risk</span>
-                  <span class="metric-value critical">85%</span>
+                <div class="stat-content">
+                  <h3>Blood Pressure</h3>
+                  <p>120/80 mmHg</p>
                 </div>
               </div>
-            </div>
-
-            <!-- Disease Information -->
-            <div class="card disease-info">
-              <h3><i class="fas fa-disease"></i> Disease Information</h3>
-              <div class="disease-list">
-                <!-- Disease items here -->
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-weight"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>Weight</h3>
+                  <p>75 kg</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-list-ol"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>Chronic Counts</h3>
+                  <p>3 Conditions</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>Cost Savings</h3>
+                  <p>$1,200</p>
+                </div>
               </div>
             </div>
 
-            <!-- Medical History -->
-            <div class="card medical-history">
-              <h3><i class="fas fa-history"></i> Medical History</h3>
-              <div class="timeline">
-                <!-- Timeline items here -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Column -->
-          <div class="right-column">
-            <!-- Alerts Section -->
-            <div class="card alerts-section">
-              <h3><i class="fas fa-exclamation-triangle"></i> Active Alerts</h3>
-              <div class="alert-list">
-                <!-- Alert items here -->
-              </div>
-            </div>
-
-            <!-- Reports Summary -->
-            <div class="card reports-summary">
-              <h3><i class="fas fa-file-medical"></i> Recent Reports</h3>
-              <div class="report-list">
-                <!-- Report items here -->
+            <!-- Patient Details Card -->
+            <div class="patient-details-card">
+              <h3><i class="fas fa-user"></i> Personal Information</h3>
+              <div class="details-grid">
+                <div class="detail-item">
+                  <span class="label">Date of Birth</span>
+                  <span class="value">March 15, 1955</span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Blood Type</span>
+                  <span class="value">O+</span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Phone Number</span>
+                  <span class="value">(555) 123-4567</span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Last Visit</span>
+                  <span class="value">December 15, 2024</span>
+                </div>
               </div>
             </div>
 
-            <!-- Follow-up Plans -->
-            <div class="card followup-plans">
-              <h3><i class="fas fa-clipboard-list"></i> Follow-up Plans</h3>
-              <div class="plan-list">
-                <!-- Plan items here -->
+            <!-- Recent Activity Timeline -->
+            <div class="recent-activity">
+              <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+              <div class="activity-timeline">
+                <div class="activity-item">
+                  <div class="activity-icon">
+                    <i class="fas fa-pills"></i>
+                  </div>
+                  <div class="activity-content">
+                    <h4>Medication Taken</h4>
+                    <p>Lisinopril 10mg - 2 hours ago</p>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-icon">
+                    <i class="fas fa-heartbeat"></i>
+                  </div>
+                  <div class="activity-content">
+                    <h4>Vital Signs Recorded</h4>
+                    <p>Blood pressure: 120/80 mmHg - 4 hours ago</p>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-icon">
+                    <i class="fas fa-calendar-check"></i>
+                  </div>
+                  <div class="activity-content">
+                    <h4>Appointment Scheduled</h4>
+                    <p>Follow-up with Dr. Johnson - January 15, 2025</p>
+                  </div>
+                </div>
               </div>
+            </div>
+          </section>
+
+          <!-- Care Plan Section -->
+          <section id="care-plan" class="dashboard-section">
+            <div class="section-header">
+              <h2><i class="fas fa-heart"></i> Care Plan & Interventions</h2>
+              <p>
+                Your personalized care plan and treatment goals for better
+                health outcomes.
+              </p>
             </div>
 
-            <!-- Cost Savings -->
-            <div class="card cost-savings">
-              <h3><i class="fas fa-dollar-sign"></i> Cost Savings Analysis</h3>
-              <div class="savings-overview">
-                <!-- Savings metrics here -->
-              </div>
-              <div class="savings-breakdown">
-                <!-- Breakdown items here -->
+            <div class="care-plan-overview">
+              <!-- Daily Care Plan Checklist -->
+              <div class="daily-care-plan">
+                <h3>
+                  <i class="fas fa-calendar-day"></i> Today's Care Plan -
+                  <span id="currentDate"></span>
+                </h3>
+                <div class="daily-progress">
+                  <div class="daily-progress-bar">
+                    <div
+                      class="daily-progress-fill"
+                      id="dailyProgress"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                  <div class="daily-progress-text" id="dailyProgressText">
+                    0% Complete - 0 of 8 tasks completed
+                  </div>
+                </div>
+
+                <div class="care-categories">
+                  <!-- Medication Management -->
+                  <div class="care-category">
+                    <h4><i class="fas fa-pills"></i> Medication Management</h4>
+                    <div class="task-list">
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="med1"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="med1">Tablets in Morning</label>
+                      </div>
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="med2"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="med2">Tablets in Afternoon</label>
+                      </div>
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="med3"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="med3">Tablets in Night</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Diet & Nutrition -->
+                  <div class="care-category">
+                    <h4><i class="fas fa-apple-alt"></i> Diet & Nutrition</h4>
+                    <div class="task-list">
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="diet1"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="diet1"
+                          >Limit sodium intake to <2,300mg</label
+                        >
+                      </div>
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="diet2"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="diet2"
+                          >Eat 5 servings of fruits/vegetables</label
+                        >
+                      </div>
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="diet3"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="diet3">Drink 8 glasses of water</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Physical Activity -->
+                  <div class="care-category">
+                    <h4><i class="fas fa-running"></i> Physical Activity</h4>
+                    <div class="task-list">
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="activity1"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="activity1">30 minutes of walking</label>
+                      </div>
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="activity2"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="activity2"
+                          >Light stretching exercises</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Health Monitoring -->
+                  <div class="care-category">
+                    <h4><i class="fas fa-heartbeat"></i> Health Monitoring</h4>
+                    <div class="task-list">
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="monitor1"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="monitor1">Record weight measurement</label>
+                      </div>
+                      <div class="task-item">
+                        <input
+                          type="checkbox"
+                          id="monitor2"
+                          class="task-checkbox"
+                          onchange="updateProgress()"
+                        />
+                        <label for="monitor2">Check for any symptoms</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Weekly Goals -->
+                <div class="weekly-goals">
+                  <h4><i class="fas fa-trophy"></i> This Week's Goals</h4>
+                  <div class="goals-grid">
+                    <div class="goal-item">
+                      <div class="goal-progress">
+                        <div class="goal-progress-bar">
+                          <div
+                            class="goal-progress-fill"
+                            style="width: 60%"
+                          ></div>
+                        </div>
+                        <span class="goal-percentage">60%</span>
+                      </div>
+                      <div class="goal-info">
+                        <h5>Blood Pressure Control</h5>
+                        <p>Keep BP below 140/90 for 5 days this week</p>
+                      </div>
+                    </div>
+                    <div class="goal-item">
+                      <div class="goal-progress">
+                        <div class="goal-progress-bar">
+                          <div
+                            class="goal-progress-fill"
+                            style="width: 80%"
+                          ></div>
+                        </div>
+                        <span class="goal-percentage">80%</span>
+                      </div>
+                      <div class="goal-info">
+                        <h5>Medication Adherence</h5>
+                        <p>Take all medications as prescribed</p>
+                      </div>
+                    </div>
+                    <div class="goal-item">
+                      <div class="goal-progress">
+                        <div class="goal-progress-bar">
+                          <div
+                            class="goal-progress-fill"
+                            style="width: 40%"
+                          ></div>
+                        </div>
+                        <span class="goal-percentage">40%</span>
+                      </div>
+                      <div class="goal-info">
+                        <h5>Physical Activity</h5>
+                        <p>Complete 150 minutes of exercise this week</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </section>
+
+          <!-- Medications Section -->
+          <section id="medications" class="dashboard-section">
+            <div class="section-header">
+              <h2><i class="fas fa-pills"></i> Medications</h2>
+              <p>Your current medication regimen and dosage schedule.</p>
+            </div>
+
+            <div class="medications-grid">
+              <div class="medication-card">
+                <div class="med-header">
+                  <h4>Lisinopril</h4>
+                  <span class="med-type">Prescription</span>
+                </div>
+                <div class="med-details">
+                  <p><strong>Dosage:</strong> 10mg tablet</p>
+                  <p><strong>Frequency:</strong> Once daily, morning</p>
+                  <p><strong>Purpose:</strong> Blood pressure control</p>
+                  <p>
+                    <strong>Instructions:</strong> Take with or without food
+                  </p>
+                </div>
+                <div class="med-status active">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Active</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- AI Chat Section -->
+          <section id="chat" class="dashboard-section">
+            <div class="section-header">
+              <h2><i class="fas fa-comments"></i> AI Health Assistant</h2>
+              <p>Get instant answers to your health questions and concerns.</p>
+            </div>
+
+            <div class="chat-container">
+              <div class="chat-header">
+                <h3>Health Assistant</h3>
+                <p>
+                  Ask me anything about your health, medications, or care plan
+                </p>
+              </div>
+
+              <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                  <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                  </div>
+                  <div class="message-content">
+                    <p>
+                      Hello! I'm your AI health assistant. I can help you with
+                      questions about your medications, care plan, or general
+                      health information. How can I assist you today?
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="chat-input">
+                <input
+                  type="text"
+                  id="chatInput"
+                  placeholder="Type your health question here..."
+                  maxlength="500"
+                />
+                <button onclick="sendMessage()">
+                  <i class="fas fa-paper-plane"></i> Send
+                </button>
+              </div>
+
+              <div class="chat-suggestions">
+                <h4>Quick Questions:</h4>
+                <div class="suggestion-buttons">
+                  <button
+                    class="suggestion-btn"
+                    onclick="askQuestion('What are the side effects of my medications?')"
+                  >
+                    Medication Side Effects
+                  </button>
+                  <button
+                    class="suggestion-btn"
+                    onclick="askQuestion('How can I improve my blood pressure?')"
+                  >
+                    Blood Pressure Tips
+                  </button>
+                  <button
+                    class="suggestion-btn"
+                    onclick="askQuestion('What should I eat for better heart health?')"
+                  >
+                    Heart Healthy Diet
+                  </button>
+                  <button
+                    class="suggestion-btn"
+                    onclick="askQuestion('When is my next appointment?')"
+                  >
+                    Appointment Info
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Appointments Section -->
+          <section id="appointments" class="dashboard-section">
+            <div class="section-header">
+              <h2>
+                <i class="fas fa-calendar-alt"></i> Appointments & Checkups
+              </h2>
+              <p>Your upcoming appointments and checkup schedule.</p>
+            </div>
+
+            <div class="appointments-overview">
+              <div class="upcoming-appointments">
+                <h3><i class="fas fa-clock"></i> Upcoming Appointments</h3>
+                <div class="appointment-list">
+                  <div class="appointment-item urgent">
+                    <div class="appointment-date">
+                      <span class="day">15</span>
+                      <span class="month">Jan</span>
+                    </div>
+                    <div class="appointment-details">
+                      <h4>Follow-up with Dr. Johnson</h4>
+                      <p>
+                        <i class="fas fa-user-md"></i> Dr. Sarah Johnson -
+                        Primary Care
+                      </p>
+                      <p><i class="fas fa-clock"></i> 10:00 AM - 10:30 AM</p>
+                      <p>
+                        <i class="fas fa-map-marker-alt"></i> Medical Center,
+                        Room 205
+                      </p>
+                      <span class="appointment-status urgent"
+                        >High Priority</span
+                      >
+                    </div>
+                  </div>
+                  <div class="appointment-item">
+                    <div class="appointment-date">
+                      <span class="day">22</span>
+                      <span class="month">Jan</span>
+                    </div>
+                    <div class="appointment-details">
+                      <h4>Cardiology Consultation</h4>
+                      <p>
+                        <i class="fas fa-user-md"></i> Dr. Michael Smith -
+                        Cardiologist
+                      </p>
+                      <p><i class="fas fa-clock"></i> 2:00 PM - 2:45 PM</p>
+                      <p>
+                        <i class="fas fa-map-marker-alt"></i> Heart Center, Room
+                        301
+                      </p>
+                      <span class="appointment-status">Regular</span>
+                    </div>
+                  </div>
+                  <div class="appointment-item">
+                    <div class="appointment-date">
+                      <span class="day">05</span>
+                      <span class="month">Feb</span>
+                    </div>
+                    <div class="appointment-details">
+                      <h4>Lab Work & Blood Tests</h4>
+                      <p><i class="fas fa-user-md"></i> Lab Technician</p>
+                      <p><i class="fas fa-clock"></i> 8:00 AM - 8:15 AM</p>
+                      <p>
+                        <i class="fas fa-map-marker-alt"></i> Lab Services,
+                        Ground Floor
+                      </p>
+                      <span class="appointment-status">Routine</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="checkup-schedule">
+                <h3><i class="fas fa-calendar-check"></i> Checkup Schedule</h3>
+                <div class="schedule-grid">
+                  <div class="schedule-item">
+                    <h4>Monthly Checkup</h4>
+                    <p>Blood pressure monitoring and medication review</p>
+                    <span class="next-date">Next: February 15, 2025</span>
+                  </div>
+                  <div class="schedule-item">
+                    <h4>Quarterly Review</h4>
+                    <p>Comprehensive health assessment and care plan review</p>
+                    <span class="next-date">Next: April 1, 2025</span>
+                  </div>
+                  <div class="schedule-item">
+                    <h4>Annual Physical</h4>
+                    <p>Complete physical examination and preventive care</p>
+                    <span class="next-date">Next: March 15, 2025</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Medical History Section -->
+          <section id="medical-history" class="dashboard-section">
+            <div class="section-header">
+              <h2><i class="fas fa-history"></i> Medical History</h2>
+              <p>Your comprehensive medical history and past treatments.</p>
+            </div>
+
+            <div class="medical-history-overview">
+              <div class="history-timeline">
+                <h3><i class="fas fa-timeline"></i> Medical Timeline</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-date">Dec 2024</div>
+                    <div class="timeline-content">
+                      <h4>Routine Checkup</h4>
+                      <p>
+                        Blood pressure: 120/80, Weight: 75kg, All vitals normal
+                      </p>
+                      <span class="timeline-status completed">Completed</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-date">Nov 2024</div>
+                    <div class="timeline-content">
+                      <h4>Medication Adjustment</h4>
+                      <p>
+                        Lisinopril dosage increased to 10mg daily for better BP
+                        control
+                      </p>
+                      <span class="timeline-status completed">Completed</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-date">Oct 2024</div>
+                    <div class="timeline-content">
+                      <h4>Cardiology Consultation</h4>
+                      <p>
+                        Echocardiogram normal, stress test passed, heart
+                        function good
+                      </p>
+                      <span class="timeline-status completed">Completed</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-date">Sep 2024</div>
+                    <div class="timeline-content">
+                      <h4>Lab Work</h4>
+                      <p>
+                        Cholesterol levels improved, blood sugar normal, kidney
+                        function stable
+                      </p>
+                      <span class="timeline-status completed">Completed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="disease-information">
+                <h3><i class="fas fa-heartbeat"></i> Disease Information</h3>
+                <div class="disease-cards">
+                  <div class="disease-card">
+                    <h4>Hypertension</h4>
+                    <p><strong>Diagnosed:</strong> March 2023</p>
+                  </div>
+                  <div class="disease-card">
+                    <h4>High Cholesterol</h4>
+                    <p><strong>Diagnosed:</strong> March 2023</p>
+                  </div>
+                  <div class="disease-card">
+                    <h4>Type 2 Diabetes</h4>
+                    <p><strong>Diagnosed:</strong> January 2022</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
 
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
     <script>
       // Theme toggle functionality
-      let isDarkMode = false;
+      const themeToggle = document.getElementById("themeToggle");
+      const body = document.body;
 
-      function toggleTheme() {
-        isDarkMode = !isDarkMode;
-        const html = document.documentElement;
-        const toggleSwitch = document.getElementById("themeToggle");
-
-        if (isDarkMode) {
-          html.setAttribute("data-theme", "dark");
-          toggleSwitch.classList.add("active");
-          localStorage.setItem("theme", "dark");
-        } else {
-          html.removeAttribute("data-theme");
-          toggleSwitch.classList.remove("active");
-          localStorage.setItem("theme", "light");
-        }
-
-        // Redraw charts with new theme
-        drawRiskChart();
+      // Load saved theme
+      const savedTheme = localStorage.getItem("theme") || "light";
+      body.setAttribute("data-theme", savedTheme);
+      if (savedTheme === "dark") {
+        themeToggle.classList.add("active");
       }
 
-      // Initialize theme from localStorage
-      function initializeTheme() {
-        const savedTheme = localStorage.getItem("theme");
-        const toggleSwitch = document.getElementById("themeToggle");
+      themeToggle.addEventListener("click", () => {
+        const currentTheme = body.getAttribute("data-theme");
+        const newTheme = currentTheme === "light" ? "dark" : "light";
 
-        if (savedTheme === "dark") {
-          isDarkMode = true;
-          document.documentElement.setAttribute("data-theme", "dark");
-          toggleSwitch.classList.add("active");
-        }
-      }
+        body.setAttribute("data-theme", newTheme);
+        themeToggle.classList.toggle("active");
+        localStorage.setItem("theme", newTheme);
+      });
 
-      // Risk chart for patient
-      function drawRiskChart() {
-        const canvas = document.getElementById("riskChart");
-        const ctx = canvas.getContext("2d");
+      // Sidebar navigation
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", (e) => {
+          e.preventDefault();
 
-        // Clear canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // Remove active class from all nav items
+          document
+            .querySelectorAll(".nav-item")
+            .forEach((nav) => nav.classList.remove("active"));
 
-        // Get theme colors
-        const isDark = document.documentElement.hasAttribute("data-theme");
-        const gridColor = isDark ? "#404040" : "#e0e0e0";
-        const textColor = isDark ? "#ffffff" : "#333333";
+          // Add active class to clicked item
+          item.classList.add("active");
 
-        // Draw axes
-        ctx.strokeStyle = gridColor;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(50, 20);
-        ctx.lineTo(50, 180);
-        ctx.lineTo(350, 180);
-        ctx.stroke();
+          // Hide all sections
+          document.querySelectorAll(".dashboard-section").forEach((section) => {
+            section.classList.remove("active");
+          });
 
-        // Draw grid lines
-        ctx.strokeStyle = gridColor;
-        ctx.lineWidth = 0.5;
-        for (let i = 0; i <= 5; i++) {
-          const y = 20 + i * 32;
-          ctx.beginPath();
-          ctx.moveTo(50, y);
-          ctx.lineTo(350, y);
-          ctx.stroke();
-        }
-
-        // Patient-specific risk data
-        const data = [
-          { label: "Very Low", count: 0, color: "#10b981" },
-          { label: "Low", count: 0, color: "#34d399" },
-          { label: "Medium", count: 0, color: "#fbbf24" },
-          { label: "High", count: 0, color: "#f59e0b" },
-          { label: "Very High", count: 1, color: "#ef4444" },
-        ];
-
-        const barWidth = 45;
-        const spacing = 55;
-        const startX = 70;
-        const maxHeight = 120;
-
-        // Draw bars (only Very High Risk for this patient)
-        data.forEach((item, index) => {
-          const x = startX + index * spacing;
-          const height = item.count > 0 ? maxHeight : 0;
-
-          if (height > 0) {
-            // Draw bar with shadow
-            ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-            ctx.shadowBlur = 8;
-            ctx.shadowOffsetX = 2;
-            ctx.shadowOffsetY = 2;
-
-            ctx.fillStyle = item.color;
-            ctx.fillRect(x, 180 - height, barWidth, height);
-
-            ctx.shadowColor = "transparent";
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-
-            // Draw count on top
-            ctx.fillStyle = textColor;
-            ctx.font = "bold 12px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText("1", x + barWidth / 2, 175 - height);
+          // Show selected section
+          const sectionId = item.getAttribute("data-section");
+          const targetSection = document.getElementById(sectionId);
+          if (targetSection) {
+            targetSection.classList.add("active");
           }
+        });
+      });
 
-          // Draw labels
-          ctx.fillStyle = textColor;
-          ctx.font = "10px Arial";
-          ctx.textAlign = "center";
-          ctx.fillText(item.label, x + barWidth / 2, 195);
+      // Close alert function
+      function closeAlert() {
+        const alert = document.getElementById("riskAlert");
+        if (alert) {
+          alert.style.display = "none";
+        }
+      }
+
+      // Chat functionality
+      function sendMessage() {
+        const input = document.getElementById("chatInput");
+        const message = input.value.trim();
+
+        if (message) {
+          addMessage(message, "user");
+          input.value = "";
+
+          // Simulate AI response
+          setTimeout(() => {
+            const response = generateAIResponse(message);
+            addMessage(response, "ai");
+          }, 1000);
+        }
+      }
+
+      function askQuestion(question) {
+        document.getElementById("chatInput").value = question;
+        sendMessage();
+      }
+
+      function addMessage(message, sender) {
+        const chatMessages = document.getElementById("chatMessages");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${sender}-message`;
+
+        const avatar =
+          sender === "user"
+            ? '<i class="fas fa-user"></i>'
+            : '<i class="fas fa-robot"></i>';
+
+        messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    ${avatar}
+                </div>
+                <div class="message-content">
+                    <p>${message}</p>
+                </div>
+            `;
+
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function generateAIResponse(userMessage) {
+        const responses = {
+          medication:
+            "Your current medications are well-tolerated. Lisinopril may cause mild dizziness initially, but this usually improves with time. Always take it at the same time each day.",
+          "blood pressure":
+            "To improve your blood pressure, maintain a low-sodium diet, exercise regularly, limit alcohol, and take your medications as prescribed. Your current reading of 120/80 is excellent!",
+          diet: "For heart health, focus on fruits, vegetables, whole grains, lean proteins, and healthy fats. Limit processed foods, sodium, and saturated fats. Your current meal plan looks great!",
+          appointment:
+            "Your next appointment is with Dr. Johnson on January 15th at 10:00 AM. It's marked as high priority due to your recent health indicators.",
+          default:
+            "I understand your concern. Based on your health records, I recommend discussing this with your healthcare provider at your next appointment. Is there anything specific about your care plan I can help clarify?",
+        };
+
+        const message = userMessage.toLowerCase();
+        if (message.includes("medication") || message.includes("side effect")) {
+          return responses.medication;
+        } else if (
+          message.includes("blood pressure") ||
+          message.includes("pressure")
+        ) {
+          return responses["blood pressure"];
+        } else if (
+          message.includes("diet") ||
+          message.includes("eat") ||
+          message.includes("food")
+        ) {
+          return responses.diet;
+        } else if (
+          message.includes("appointment") ||
+          message.includes("visit") ||
+          message.includes("doctor")
+        ) {
+          return responses.appointment;
+        } else {
+          return responses.default;
+        }
+      }
+
+      // Enter key support for chat
+      document
+        .getElementById("chatInput")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
         });
 
-        // Draw Y-axis labels
-        ctx.fillStyle = textColor;
-        ctx.font = "10px Arial";
-        ctx.textAlign = "right";
-        for (let i = 0; i <= 5; i++) {
-          const y = 180 - i * 32;
-          const value = i;
-          ctx.fillText(value.toString(), 45, y + 4);
+      // View report functionality
+      document.querySelectorAll(".view-report-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          showNotification("Report viewer would open here", "info");
+        });
+      });
+
+      // Notification system
+      function showNotification(message, type = "info") {
+        const container = document.getElementById("notificationContainer");
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+                <i class="fas fa-${
+                  type === "success"
+                    ? "check-circle"
+                    : type === "error"
+                    ? "exclamation-circle"
+                    : "info-circle"
+                }"></i>
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+        container.appendChild(notification);
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+          if (notification.parentElement) {
+            notification.remove();
+          }
+        }, 5000);
+      }
+
+      // Care Plan Progress Tracking
+      function updateProgress() {
+        const checkboxes = document.querySelectorAll(".task-checkbox");
+        const checkedBoxes = document.querySelectorAll(
+          ".task-checkbox:checked"
+        );
+        const totalTasks = checkboxes.length;
+        const completedTasks = checkedBoxes.length;
+
+        const progressPercentage = Math.round(
+          (completedTasks / totalTasks) * 100
+        );
+
+        // Update daily progress bar
+        const dailyProgressBar = document.getElementById("dailyProgress");
+        const dailyProgressText = document.getElementById("dailyProgressText");
+
+        if (dailyProgressBar && dailyProgressText) {
+          dailyProgressBar.style.width = progressPercentage + "%";
+          dailyProgressText.textContent = `${progressPercentage}% Complete - ${completedTasks} of ${totalTasks} tasks completed`;
+
+          // Change color based on progress
+          if (progressPercentage === 100) {
+            dailyProgressBar.style.background =
+              "linear-gradient(90deg, var(--success-color), var(--accent-color))";
+            showNotification(
+              "🎉 Congratulations! You've completed all tasks for today!",
+              "success"
+            );
+          } else if (progressPercentage >= 75) {
+            dailyProgressBar.style.background =
+              "linear-gradient(90deg, var(--info-color), var(--accent-color))";
+          } else if (progressPercentage >= 50) {
+            dailyProgressBar.style.background =
+              "linear-gradient(90deg, var(--warning-color), var(--accent-color))";
+          } else {
+            dailyProgressBar.style.background =
+              "linear-gradient(90deg, var(--danger-color), var(--warning-color))";
+          }
+        }
+
+        // Save progress to localStorage
+        const today = new Date().toDateString();
+        const progressData = {
+          date: today,
+          completed: completedTasks,
+          total: totalTasks,
+          percentage: progressPercentage,
+        };
+
+        // Get existing progress data
+        let allProgress = JSON.parse(
+          localStorage.getItem("carePlanProgress") || "[]"
+        );
+
+        // Update or add today's progress
+        const existingIndex = allProgress.findIndex(
+          (item) => item.date === today
+        );
+        if (existingIndex >= 0) {
+          allProgress[existingIndex] = progressData;
+        } else {
+          allProgress.push(progressData);
+        }
+
+        localStorage.setItem("carePlanProgress", JSON.stringify(allProgress));
+
+        // Update overall progress (7-day average)
+        updateOverallProgress();
+      }
+
+      function updateOverallProgress() {
+        const allProgress = JSON.parse(
+          localStorage.getItem("carePlanProgress") || "[]"
+        );
+        const last7Days = allProgress.slice(-7);
+
+        if (last7Days.length > 0) {
+          const averageProgress =
+            last7Days.reduce((sum, day) => sum + day.percentage, 0) /
+            last7Days.length;
+          const overallProgressBar = document.getElementById("overallProgress");
+          const progressText = document.getElementById("progressText");
+
+          if (overallProgressBar && progressText) {
+            overallProgressBar.style.width = Math.round(averageProgress) + "%";
+            progressText.textContent = `${Math.round(
+              averageProgress
+            )}% Complete - ${last7Days.length} days tracked`;
+          }
         }
       }
 
-      // Action functions
-      function goBack() {
-        window.history.back();
+      function setCurrentDate() {
+        const currentDate = new Date();
+        const dateString = currentDate.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+
+        const dateElement = document.getElementById("currentDate");
+        if (dateElement) {
+          dateElement.textContent = dateString;
+        }
       }
 
-      function scheduleAppointment() {
-        alert("Opening appointment scheduler...");
+      function loadTodayProgress() {
+        const today = new Date().toDateString();
+        const allProgress = JSON.parse(
+          localStorage.getItem("carePlanProgress") || "[]"
+        );
+        const todayProgress = allProgress.find((item) => item.date === today);
+
+        if (todayProgress) {
+          // Restore checkbox states
+          const checkboxes = document.querySelectorAll(".task-checkbox");
+          const completedCount = todayProgress.completed;
+
+          for (let i = 0; i < completedCount && i < checkboxes.length; i++) {
+            checkboxes[i].checked = true;
+          }
+
+          // Update progress display
+          updateProgress();
+        }
       }
 
-      function assignCareManager() {
-        alert("Assigning care manager...");
-      }
-
-      function viewReports() {
-        alert("Opening medical reports...");
-      }
-
-      // Initialize page
-      window.addEventListener("load", function () {
-        initializeTheme();
-        drawRiskChart();
-
-        // Add event listener for theme toggle
-        document
-          .getElementById("themeToggle")
-          .addEventListener("click", toggleTheme);
+      // Initialize care plan when page loads
+      document.addEventListener("DOMContentLoaded", function () {
+        setCurrentDate();
+        loadTodayProgress();
+        updateOverallProgress();
       });
     </script>
   </body>

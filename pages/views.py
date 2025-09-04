@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from predictor import process_and_predict 
 from .models import CustomUser, PatientAnalysis # Make sure to import PatientAnalysis
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.core.paginator import Paginator # Import Django's Paginator
 from django.db.models import Q 
+from django.core.cache import cache 
 
 
 
@@ -105,47 +107,66 @@ def user_dashboard(request):
 @login_required
 def admin_dashboard(request):
     """
-    Displays the admin dashboard with filtering, searching, and pagination.
+    Displays the admin dashboard with caching, full-dataset filtering, and pagination.
     """
     if not request.user.is_staff:
         return redirect('user_dashboard')
 
-    # --- Step 1: Filtering Logic ---
+    # --- Step 1: Get Filters and Create Cache Key ---
     search_query = request.GET.get('search', '')
     risk_tier_query = request.GET.get('risk_tier', '')
+    age_range_query = request.GET.get('age_range', '') # New age filter
+    page_number = request.GET.get('page', 1)
+    
+    cache_key = f"admin_dashboard_{search_query}_{risk_tier_query}_{age_range_query}_{page_number}"
+    cached_context = cache.get(cache_key)
 
-    # Start with all patients, using the default ordering from the model
+    if cached_context:
+        print("--- CACHE HIT! Loading data from Redis. ---")
+        return render(request, 'pages/admin_dashboard.html', cached_context)
+    
+    # --- Step 2: If No Cache, Query the FULL Database ---
+    print("--- CACHE MISS! Querying PostgreSQL database. ---")
+    
+    # We start with the full list of patients, no [:150] limit.
     patient_list = PatientAnalysis.objects.all()
 
+    # Apply filters from your function
     if search_query:
-        # --- Step 2: Database Query ---
-        # Use a Q object to search across multiple fields (ID and age)
         search_filter = Q(desynpuf_id__icontains=search_query)
         if search_query.isnumeric():
             search_filter |= Q(age=search_query)
         patient_list = patient_list.filter(search_filter)
-
+    
     if risk_tier_query:
-        # Filter by the selected risk tier
         patient_list = patient_list.filter(risk_tier=risk_tier_query)
+    
+    # Add the age range filter
+    if age_range_query:
+        try:
+            min_age, max_age = map(int, age_range_query.split('-'))
+            patient_list = patient_list.filter(age__gte=min_age, age__lte=max_age)
+        except ValueError:
+            pass # Ignore invalid age range formats
 
-    # --- Step 3: Pagination Logic ---
-    paginator = Paginator(patient_list, 10) # Show 10 patients per page
-    page_number = request.GET.get('page')
+    # --- Step 3: Paginate the FULL, Filtered List ---
+    paginator = Paginator(patient_list, 10) # Django handles getting only 10 items
     page_obj = paginator.get_page(page_number)
     
-    # --- Context Data for the Template ---
     context = {
-        'page_obj': page_obj,  # Pass the paginated page object to the template
+        'page_obj': page_obj,
         'current_user': request.user,
-        'filter_options': {
-            'risk_tiers': PatientAnalysis.RISK_TIER_CHOICES,
-        },
-        'current_filters': {
-            'search': search_query,
+        'filter_options': { 'risk_tiers': PatientAnalysis.RISK_TIER_CHOICES },
+        'current_filters': { 
+            'search': search_query, 
             'risk_tier': risk_tier_query,
+            'age_range': age_range_query # Pass to template
         }
     }
+
+    # --- Step 4: Save the Result to the Cache ---
+    cache.set(cache_key, context, timeout=900) # Cache for 15 minutes
+
     return render(request, 'pages/admin_dashboard.html', context)
 
     # try:
@@ -205,7 +226,7 @@ def get_patient_list(search='', risk_level='', status='', age_range=''):
         except ValueError:
             pass
 
-    return patients[:150]
+    return patients
 
 
 def get_patient_filters():
@@ -230,6 +251,29 @@ def user_logout(request):
     logout(request)
     messages.success(request, "You have been successfully logged out.")
     return redirect("home")
+
+@login_required
+def upload_data(request):
+    """
+    Handles displaying the upload form (GET) and processing
+    the ML prediction (POST).
+    """
+    if not request.user.is_staff:
+        return redirect('user_dashboard')
+
+    if request.method == 'POST':
+        try:
+            # Pass the form data (request.POST) directly to your processing function
+            results = process_and_predict(request.POST)
+            # Return the prediction results as a JSON response to the JavaScript
+            return JsonResponse(results)
+        except Exception as e:
+            # If the predictor script fails, send a detailed error back as JSON
+            return JsonResponse({'error': f"An error occurred during prediction: {str(e)}"}, status=500)
+
+    # For a GET request, just render the page with the empty form
+    context = {'user': request.user}
+    return render(request, 'pages/upload.html', context)
 
 
 # --- Contact Form View ---

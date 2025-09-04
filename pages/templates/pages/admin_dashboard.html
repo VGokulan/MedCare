@@ -5,10 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Risk Dashboard</title>
-    <!-- Links to your CSS files -->
     <link rel="stylesheet" href="{% static 'pages/css/dashboard_style.css' %}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -27,30 +25,16 @@
             <!-- Sidebar -->
             <aside class="sidebar">
                 <nav class="sidebar-nav">
-                    <a href="{% url 'admin_dashboard' %}" class="nav-item active">
-                        <i class="fas fa-users"></i>
-                        <span>Patients List</span>
-                    </a>
-                    <!-- 
-                      *** NEW UPLOAD BUTTON ADDED HERE ***
-                      This links to the 'upload_data' URL you will create.
-                    -->
-                    <a href="{% url 'upload_data' %}" class="nav-item">
-                        <i class="fas fa-plus"></i>
-                        <span>Upload Data</span>
-                    </a>
-                    <a href="{% url 'logout' %}" class="nav-item">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
+                    <a href="{% url 'admin_dashboard' %}" class="nav-item active"><i class="fas fa-users"></i><span>Patients List</span></a>
+                    <a href="{% url 'upload_data' %}" class="nav-item"><i class="fas fa-plus"></i><span>Upload Data</span></a>
+                    <a href="{% url 'logout' %}" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
                 </nav>
             </aside>
             
             <!-- Content Area -->
             <div class="content">
-                <!-- Patients Header -->
                 <div class="patients-header">
-                    <div class="patients-title"><h1>Patient Management</h1><p>View and manage all registered patients ranked by risk tier</p></div>
+                    <div class="patients-title"><h1>Patient Management</h1><p>View and manage all patients ranked by risk tier</p></div>
                     <div class="patients-actions"><button class="btn-primary" onclick="exportPatients()"><i class="fas fa-download"></i> Export Data</button></div>
                 </div>
 
@@ -58,24 +42,18 @@
                 <div class="filters-section">
                     <form method="GET" action="{% url 'admin_dashboard' %}">
                         <div class="filters-grid">
-                            <div class="filter-group">
-                                <label for="searchInput">Search Patients</label>
-                                <input type="text" id="searchInput" name="search" placeholder="Search by ID..." value="{{ current_filters.search }}">
-                            </div>
+                            <div class="filter-group"><label for="searchInput">Search Patients</label><input type="text" id="searchInput" name="search" placeholder="Search by ID or age..." value="{{ current_filters.search }}"></div>
                             <div class="filter-group">
                                 <label for="riskFilter">Risk Tier</label>
                                 <select id="riskFilter" name="risk_tier">
                                     <option value="">All Risk Tiers</option>
                                     {% for tier_value, tier_display in filter_options.risk_tiers %}
-                                    <option value="{{ tier_value }}" {% if current_filters.risk_tier == tier_value|stringformat:"s" %}selected{% endif %}>{{ tier_display }}</option>
+                                    <option value="{{ tier_value }}" {% if current_filters.risk_tier == tier_value %}selected{% endif %}>{{ tier_display }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
-                        <div class="filters-actions">
-                            <button type="submit" class="btn-apply">Apply Filters</button>
-                            <a href="{% url 'admin_dashboard' %}" class="btn-reset">Reset</a>
-                        </div>
+                        <div class="filters-actions"><button type="submit" class="btn-apply">Apply Filters</button><a href="{% url 'admin_dashboard' %}" class="btn-reset">Reset</a></div>
                     </form>
                 </div>
 
@@ -83,43 +61,46 @@
                 <div class="patients-table-container">
                     <div class="table-header">
                         <h3>All Patients (Ranked by Risk Tier)</h3>
-                        <div class="table-stats">
-                            <span>Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ page_obj.paginator.count }} patients</span>
-                        </div>
+                        <div class="table-stats"><span>Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ page_obj.paginator.count }} patients</span></div>
                     </div>
                     
                     <div class="table-container">
                         <table class="patients-table">
                             <thead>
                                 <tr>
+                                    <!-- UPDATED: New column for Patient Name -->
+                                    <th>Patient Name</th>
                                     <th>Member ID</th>
                                     <th>Age</th>
-                                    <th>Gender</th>
                                     <th>Risk Tier</th>
-                                    <th>90-Day Hosp. Risk</th>
-                                    <th>Chronic Conditions</th>
+                                    <!-- UPDATED: Column for the readable conditions list -->
+                                    <th>Conditions</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for patient in page_obj %}
                                 <tr data-patient-id="{{ patient.desynpuf_id }}">
+                                    <td>
+                                        <div class="patient-info">
+                                            <div class="patient-avatar-initial">{{ patient.patient_name|first }}</div>
+                                            <div class="patient-details">
+                                                <!-- Calling the new patient_name property from your model -->
+                                                <h4>{{ patient.patient_name }}</h4>
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td>{{ patient.desynpuf_id }}</td>
                                     <td>{{ patient.age }}</td>
-                                    <td>{% if patient.gender_male %}Male{% else %}Female{% endif %}</td>
                                     <td><span class="risk-badge risk-{{ patient.risk_tier }}">{{ patient.get_risk_tier_display }}</span></td>
-                                    <td>{{ patient.risk_90d_hospitalization|floatformat:2 }}%</td>
-                                    <td>{{ patient.chronic_condition_count }}</td>
+                                    <!-- Calling the new get_conditions_display method from your model -->
+                                    <td class="conditions-cell">{{ patient.get_conditions_display }}</td>
                                     <td>
-                                        <div class="action-buttons">
-                                            <button class="action-btn view" title="View Details"><i class="fas fa-eye"></i></button>
-                                        </div>
+                                        <div class="action-buttons"><button class="action-btn view" title="View Details"><i class="fas fa-eye"></i></button></div>
                                     </td>
                                 </tr>
                                 {% empty %}
-                                <tr>
-                                    <td colspan="7" class="no-results">No patients found matching your filters.</td>
-                                </tr>
+                                <tr><td colspan="6" class="no-results">No patients found matching your filters.</td></tr>
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -127,23 +108,14 @@
 
                     <!-- Pagination Controls -->
                     <div class="pagination-controls">
-                        {% if page_obj.has_previous %}
-                        <a href="?page={{ page_obj.previous_page_number }}{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="pagination-btn">
-                            <i class="fas fa-chevron-left"></i> Previous
-                        </a>
-                        {% endif %}
+                        {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="pagination-btn"><i class="fas fa-chevron-left"></i> Previous</a>{% endif %}
                         <span class="pagination-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-                        {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="pagination-btn">
-                            Next <i class="fas fa-chevron-right"></i>
-                        </a>
-                        {% endif %}
+                        {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="pagination-btn">Next <i class="fas fa-chevron-right"></i></a>{% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
       document.addEventListener('DOMContentLoaded', function() {
     initializeTheme();

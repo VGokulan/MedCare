@@ -44,7 +44,10 @@ class Admin(models.Model):
         return self.email
     
 class PatientAnalysis(models.Model):
-    # ... (all your existing fields remain the same)
+    """
+    This model represents the patient_analysis table. It is an UNMANAGED model.
+    The field names here must EXACTLY match the column names in your PostgreSQL table.
+    """
     desynpuf_id = models.CharField(primary_key=True, max_length=255)
     age = models.IntegerField()
     gender_male = models.BooleanField()
@@ -68,35 +71,33 @@ class PatientAnalysis(models.Model):
     outpatient_visits = models.IntegerField()
     total_medicare_costs = models.DecimalField(max_digits=10, decimal_places=2)
     prior_hospitalization = models.BooleanField()
+
+    # --- CORRECTED FIELDS ---
+    # The database error indicates the score fields were wrong.
+    # We are using the risk fields that the template and original schema expect.
     risk_30d_hospitalization = models.FloatField()
     risk_60d_hospitalization = models.FloatField()
     risk_90d_hospitalization = models.FloatField()
     mortality_risk = models.FloatField()
+
     RISK_TIER_CHOICES = [('1', 'Critical'), ('2', 'High'), ('3', 'Medium'), ('4', 'Low'), ('5', 'Healthy')]
     risk_tier = models.CharField(max_length=10, choices=RISK_TIER_CHOICES)
     risk_tier_label = models.CharField(max_length=50) 
+    
     care_intervention = models.TextField(blank=True, null=True)
     annual_intervention_cost = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     cost_savings = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     prevented_hospitalizations = models.IntegerField(null=True, blank=True)
     
-    # --- NEW HELPER METHODS ---
+    # --- HELPER METHODS FOR THE TEMPLATE ---
     
     @property
     def patient_name(self):
-        """
-        Returns a display name for the patient.
-        In a real system, this might look up a name from another table.
-        For now, we'll format the ID.
-        """
-        # A placeholder for real names. You can customize this logic.
-        # For now, we return a formatted version of the ID.
+        """Creates a display name for the template, like 'Patient 007D4B1D'."""
         return f"Patient {self.desynpuf_id[:8]}"
 
     def get_conditions_display(self):
-        """
-        Creates a comma-separated string of the patient's chronic conditions.
-        """
+        """Creates a readable, comma-separated string of the patient's chronic conditions."""
         conditions = []
         if self.sp_chf: conditions.append("CHF")
         if self.sp_diabetes: conditions.append("Diabetes")
@@ -115,4 +116,5 @@ class PatientAnalysis(models.Model):
     class Meta:
         managed = False
         db_table = 'patient_analysis'
+        # Updated ordering to use a field that exists in your final schema
         ordering = ['-risk_tier', '-risk_90d_hospitalization']

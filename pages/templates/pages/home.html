@@ -122,7 +122,7 @@
                                 <a href="/schedule-a-demo" class="eq-btn"> Book a Demo </a> 
                             </div> 
                             <div class="eq-hero-image">
-                                <img src="{% static 'pages/images/image3.jpg' %}" class="img-fluid" alt="Equipohealth" /> 
+                                <img src="{% static 'pages/images/image3.png' %}" class="img-fluid" alt="Equipohealth" /> 
                             </div> 
                         </div>
                     </div> 
@@ -215,14 +215,14 @@
                             </div> -->
                         </div>
                         <div class="swiper-slide">
-                            <img src="{% static 'pages/images/about2.jpg' %}" alt="Doctors collaborating" loading="lazy">
+                            <img src="{% static 'pages/images/about2.png' %}" alt="Doctors collaborating" loading="lazy">
                             <!-- <div class="carousel-content">
                                 <h3 class="carousel-title">Collaborative Approach</h3>
                                 <p class="carousel-description">We believe in working closely with medical professionals to develop tools that truly meet the needs of healthcare providers, ensuring our solutions are both practical and revolutionary.</p>
                             </div> -->
                         </div>
                         <div class="swiper-slide">
-                            <img src="{% static 'pages/images/about1.jpg' %}" alt="Healthcare technology" loading="lazy">
+                            <img src="{% static 'pages/images/about1.png' %}" alt="Healthcare technology" loading="lazy">
                             <!-- <div class="carousel-content">
                                 <h3 class="carousel-title">Cutting-Edge Technology</h3>
                                 <p class="carousel-description">Our AI-powered platform uses the latest advancements in machine learning and predictive analytics to forecast health outcomes and optimize treatment plans with remarkable accuracy.</p>
@@ -252,7 +252,7 @@
   <!-- Section 01 -->
   <section class="eq-block-section from-left">
     <div class="eq-image-block">
-      <img src="{% static 'pages/images/features1.jpg' %}" alt="Healthcare">
+      <img src="{% static 'pages/images/features1.png' %}" alt="Healthcare">
     </div>
     <div class="eq-text-block">
       <div class="eq-block-count">01</div>
@@ -297,7 +297,7 @@ Enable precise and efficient allocation of clinical resources based on risk leve
   <!-- Section 04 -->
   <section class="eq-block-section reverse from-left">
     <div class="eq-image-block">
-      <img src="{% static 'pages/images/features4.jpg' %}" alt="Quality Care">
+      <img src="{% static 'pages/images/features4.png' %}" alt="Quality Care">
     </div>
     <div class="eq-text-block">
       <div class="eq-block-count">04</div>
@@ -311,7 +311,7 @@ Enable precise and efficient allocation of clinical resources based on risk leve
   <!-- Section 05 -->
   <section class="eq-block-section from-right">
     <div class="eq-image-block">
-      <img src="{% static 'pages/images/features5.jpg' %}" alt="Cost Optimization">
+      <img src="{% static 'pages/images/features5.png' %}" alt="Cost Optimization">
     </div>
     <div class="eq-text-block">
       <div class="eq-block-count">05</div>
@@ -608,175 +608,248 @@ Enable precise and efficient allocation of clinical resources based on risk leve
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-
-    // --- ALL YOUR ANIMATION LOGIC IS PRESERVED BELOW ---
-
-    // Main initialization function
-    function initAll() {
-        initHeroSwiper();
-        initAboutSwiper();
-        initScrollAnimations();
-        initCounterAnimations();
-        initInsightAnimations();
-        initRevealAnimations();
-        initSocialIconHover();
-    }
-
-    // Hero Swiper initialization
-    function initHeroSwiper() {
-        if (typeof Swiper !== 'undefined') {
-            new Swiper(".slider-one-slide", {
-                slidesPerView: 1, loop: true, speed: 600,
-                autoplay: { delay: 4000, disableOnInteraction: false },
-                navigation: { nextEl: ".slider-one-slide-next-1", prevEl: ".slider-one-slide-prev-1" },
-                keyboard: { enabled: true, onlyInViewport: true },
-                effect: "slide",
-            });
+    document.addEventListener("DOMContentLoaded", () => {
+        // Main initialization function
+        function initAll() {
+            initHeroSwiper();
+            initAboutSwiper();
+            initScrollAnimations();
+            initCounterAnimations();
+            initInsightAnimations();
+            initRevealAnimations();
+            initSocialIconHover();
         }
-    }
 
-    // About section Swiper initialization
-    function initAboutSwiper() {
-        if (typeof Swiper !== 'undefined') {
-            new Swiper('.about-carousel', {
-                loop: true,
-                navigation: { nextEl: '.about-carousel .swiper-button-next', prevEl: '.about-carousel .swiper-button-prev' },
-                pagination: { el: '.about-carousel .swiper-pagination', clickable: true },
-                autoplay: { delay: 6000, disableOnInteraction: false },
-                effect: 'fade',
-                fadeEffect: { crossFade: true },
-                speed: 1200,
-            });
+        // Hero Swiper initialization
+        function initHeroSwiper() {
+            if (typeof Swiper !== 'undefined') {
+                new Swiper(".slider-one-slide", {
+                    slidesPerView: 1,
+                    loop: true,
+                    speed: 600,
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false,
+                    },
+                    navigation: {
+                        nextEl: ".slider-one-slide-next-1",
+                        prevEl: ".slider-one-slide-prev-1",
+                    },
+                    keyboard: {
+                        enabled: true,
+                        onlyInViewport: true,
+                    },
+                    effect: "slide",
+                });
+            }
         }
-    }
 
-    // Scroll animations for features section
-    function initScrollAnimations() {
-        const sections = document.querySelectorAll('.eq-block-section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                }
-            });
-        }, { threshold: 0.2 });
-        sections.forEach(section => observer.observe(section));
-    }
+        // About section Swiper initialization
+        function initAboutSwiper() {
+            if (typeof Swiper !== 'undefined') {
+                const aboutSwiper = new Swiper('.about-carousel', {
+                    loop: true,
+                    navigation: {
+                        nextEl: '.about-carousel .swiper-button-next',
+                        prevEl: '.about-carousel .swiper-button-prev',
+                    },
+                    pagination: {
+                        el: '.about-carousel .swiper-pagination',
+                        clickable: true,
+                    },
+                    autoplay: {
+                        delay: 6000,
+                        disableOnInteraction: false,
+                    },
+                    effect: 'fade',
+                    fadeEffect: {
+                        crossFade: true
+                    },
+                    speed: 1200,
+                });
 
-    // Counter animation for stats
-    function initCounterAnimations() {
-        let countersAnimated = false;
-        const aboutSection = document.getElementById('about');
-
-        function animateCounter(element, target, duration) {
-            let startTime = null;
-            const startValue = 0;
-            const suffix = target.toString().includes('+') ? '+' : (target.toString().includes('%') ? '%' : '');
-            const numericTarget = parseInt(target);
-            function updateCounter(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const progress = Math.min((timestamp - startTime) / duration, 1);
-                const currentValue = Math.floor(progress * numericTarget);
-                element.textContent = currentValue + suffix;
-                if (progress < 1) {
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    element.textContent = numericTarget + suffix;
+                // Add auto-hide functionality for arrows
+                const carousel = document.querySelector('.about-carousel');
+                const arrows = document.querySelectorAll('.about-carousel .swiper-button-next, .about-carousel .swiper-button-prev');
+                
+                if (carousel && arrows.length) {
+                    carousel.addEventListener('mouseenter', () => {
+                        arrows.forEach(arrow => {
+                            arrow.style.opacity = '1';
+                        });
+                    });
+                    
+                    carousel.addEventListener('mouseleave', () => {
+                        arrows.forEach(arrow => {
+                            arrow.style.opacity = '0';
+                        });
+                    });
                 }
             }
-            requestAnimationFrame(updateCounter);
         }
 
-        function checkScroll() {
-            if (aboutSection && !countersAnimated) {
-                const rect = aboutSection.getBoundingClientRect();
-                const isVisible = (rect.top <= window.innerHeight / 2 && rect.bottom >= 0);
-                if (isVisible) {
-                    const counter1 = document.getElementById('counter-1');
-                    const counter2 = document.getElementById('counter-2');
-                    const counter3 = document.getElementById('counter-3');
-                    if (counter1 && counter2 && counter3) {
-                        animateCounter(counter1, '500+', 2000);
-                        animateCounter(counter2, '70%', 2000);
-                        animateCounter(counter3, '98%', 2000);
-                        countersAnimated = true;
-                        window.removeEventListener('scroll', checkScroll); // Stop listening after animation
+        // Scroll animations for features section
+        function initScrollAnimations() {
+            const sections = document.querySelectorAll('.eq-block-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    }
+                });
+            }, { threshold: 0.2 });
+            sections.forEach(section => observer.observe(section));
+        }
+
+        // Counter animation for stats
+        function initCounterAnimations() {
+            let countersAnimated = false;
+            let elementsAnimated = false;
+            const aboutSection = document.getElementById('about');
+
+            function animateCounter(element, target, duration) {
+                let startTime = null;
+                const startValue = 0;
+                const suffix = target.toString().includes('+') ? '+' : (target.toString().includes('%') ? '%' : '');
+                const numericTarget = parseInt(target);
+                
+                function updateCounter(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = Math.min((timestamp - startTime) / duration, 1);
+                    const currentValue = Math.floor(progress * numericTarget);
+                    element.textContent = currentValue + suffix;
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        element.textContent = numericTarget + suffix;
+                    }
+                }
+                requestAnimationFrame(updateCounter);
+            }
+
+            function checkScroll() {
+                if (aboutSection) {
+                    const rect = aboutSection.getBoundingClientRect();
+                    const isVisible = (rect.top <= window.innerHeight && rect.bottom >= 0);
+                    
+                    // Animate text and carousel elements
+                    if (!elementsAnimated && isVisible) {
+                        const aboutText = document.querySelector('.about-text');
+                        const aboutCarousel = document.querySelector('.about-carousel');
+                        
+                        if (aboutText) aboutText.classList.add('animated');
+                        if (aboutCarousel) aboutCarousel.classList.add('animated');
+                        
+                        // Animate stat items with delay
+                        const statItems = document.querySelectorAll('.stat-item');
+                        statItems.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('animated');
+                            }, 300 * index);
+                        });
+                        
+                        elementsAnimated = true;
+                    }
+                    
+                    // Animate counters
+                    if (!countersAnimated && isVisible) {
+                        const counter1 = document.getElementById('counter-1');
+                        const counter2 = document.getElementById('counter-2');
+                        const counter3 = document.getElementById('counter-3');
+                        
+                        if (counter1 && counter2 && counter3) {
+                            animateCounter(counter1, '500+', 2000);
+                            animateCounter(counter2, '70%', 2000);
+                            animateCounter(counter3, '98%', 2000);
+                            countersAnimated = true;
+                        }
                     }
                 }
             }
+            
+            window.addEventListener('scroll', checkScroll);
+            checkScroll(); // Check on load
         }
-        window.addEventListener('scroll', checkScroll);
-        checkScroll(); // Check on load
-    }
 
-    // Animate insight items on scroll
-    function initInsightAnimations() {
-        const insightItems = document.querySelectorAll('.insight-item');
-        insightItems.forEach(item => {
-            item.style.opacity = 0;
-            item.style.transform = 'translateY(20px)';
-            item.style.transition = 'all 0.6s ease';
-        });
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const itemsToAnimate = entry.target.querySelectorAll('.insight-item');
-                    itemsToAnimate.forEach((item, index) => {
+        // Animate insight items on scroll
+        function initInsightAnimations() {
+            const insightItems = document.querySelectorAll('.insight-item');
+            const statsHighlight = document.querySelector('.stats-highlight');
+            
+            // Set initial state for animation
+            insightItems.forEach(item => {
+                item.style.opacity = 0;
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'all 0.6s ease';
+            });
+            
+            if (statsHighlight) {
+                statsHighlight.style.opacity = 0;
+                statsHighlight.style.transform = 'scale(0.95)';
+                statsHighlight.style.transition = 'all 0.8s ease';
+            }
+            
+            // Animate items on scroll
+            function animateOnScroll() {
+                const scrollPosition = window.scrollY + window.innerHeight;
+                
+                // Animate insight items
+                insightItems.forEach((item, index) => {
+                    const itemPosition = item.offsetTop;
+                    if (scrollPosition > itemPosition + 100) {
                         setTimeout(() => {
                             item.style.opacity = 1;
                             item.style.transform = 'translateY(0)';
                         }, index * 150);
-                    });
-                    observer.unobserve(entry.target);
+                    }
+                });
+                
+                // Animate stats highlight
+                if (statsHighlight) {
+                    const statsPosition = statsHighlight.offsetTop;
+                    if (scrollPosition > statsPosition + 100) {
+                        statsHighlight.style.opacity = 1;
+                        statsHighlight.style.transform = 'scale(1)';
+                    }
                 }
-            });
-        }, { threshold: 0.1 });
-        const container = document.querySelector('.problem-solution-container');
-        if (container) observer.observe(container);
-    }
-    
-    // Animate general .reveal elements
-    function initRevealAnimations() {
-        const reveals = document.querySelectorAll(".reveal");
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("active");
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2 });
-        reveals.forEach(reveal => observer.observe(reveal));
-    }
+            }
+            
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll(); // Trigger once on load
+        }
+        
+        // Animate general .reveal elements
+        function initRevealAnimations() {
+            const reveals = document.querySelectorAll(".reveal");
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+            reveals.forEach(reveal => observer.observe(reveal));
+        }
 
-    // Add hover effects to social icons
-    function initSocialIconHover() {
-        const socialIcons = document.querySelectorAll('.social-icon');
-        socialIcons.forEach(icon => {
-            icon.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
+        // Add hover effects to social icons
+        function initSocialIconHover() {
+            const socialIcons = document.querySelectorAll('.social-icon');
+            socialIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.background = 'rgba(255, 255, 255, 0.3)';
+                });
+                icon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.background = 'rgba(255, 255, 255, 0.2)';
+                });
             });
-            icon.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    }
+        }
 
-    // --- IMPORTANT ---
-    // The code blocks that started with:
-    // document.getElementById('contactForm').addEventListener('submit', function(e) { e.preventDefault(); ... });
-    // have been COMPLETELY REMOVED.
-    //
-    // This allows the form to perform its default action, which is to
-    // submit the data to your Django backend URL as intended. Your
-    // Django backend is now responsible for handling the submission.
-
-    // Initialize all functions
-    initAll();
-});
-
- 
+        // Initialize all functions
+        initAll();
+    });
 </script>
 
 </body>
