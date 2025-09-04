@@ -6,13 +6,14 @@ urlpatterns = [
 
     # Login page (renders the HTML with both forms)
     path('login/', views.login_page, name='login_page'),
+    path('signup/', views.signup_page, name='signup_page'),
 
     # Form POST handlers
+    path('user_signup/', views.user_signup, name='user_signup'),
     path('user_login/', views.user_login, name='user_login'),
     path('admin_login/', views.admin_login, name='admin_login'),
+    path('contact-submission/', views.contact_submission, name='contact_submission'),
 
-    # Signup
-    path('signup/', views.signup_page, name='signup_page'),
 
     # Logout
     path('logout/', views.user_logout, name='logout'),

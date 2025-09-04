@@ -1,156 +1,177 @@
-{% comment %}
-  IMPORTANT: This tag MUST be at the very top of the file.
-  It enables the use of the {% static %} tag for CSS, JS, and images.
-{% endcomment %}
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedCare</title>
-
-    {% comment %} Django needs to know the path to your favicon image {% endcomment %}
     <link rel="icon" href="{% static 'pages/images/log.png' %}">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    {% comment %}
-      FIX #1: Correct path to your CSS file using the 'static' tag.
-    {% endcomment %}
     <link rel="stylesheet" href="{% static 'pages/css/home.css' %}">
+  
 </head>
 <body>
 
 <!--hero and header-->
     <div class="header">
-        {% comment %} FIX #2: Correct path for all local images. {% endcomment %}
+         <div class="logo-text">
         <img src="{% static 'pages/images/log.png' %}" alt="MedCare Logo">
         <h1>MedCare</h1>
+       </div>
         <div class="content">
             <ul>
-                <li><a href="#home">Home</a></li>
+                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#insights">Insights</a></li>
                 <li><a href="#contact">Contact</a></li>
+                
             </ul>
         </div>
+        <div class="hamburger" onclick="document.querySelector('.content ul').classList.toggle('active')">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
         <div class="but">
-            {% comment %}
-              FIX #3: Correct link to the login page using the 'url' tag.
-              This uses the 'name' from your urls.py file.
-            {% endcomment %}
             <a href="{% url 'login_page' %}"><button type="button">Login</button></a>
         </div>
     </div>
+    
 
-<section class="eq-section eq-hero eq-hero-desktop" id="home">
-    <div class="eq-hero-wrap">
-        <div class="eq-hero-video-wrap">
-            <video class="eq-hero-video" autoplay muted loop style="opacity: 0.82;">
-                <source src="https://www.equipo.io/wp-content/themes/equipohealth/images/bgbnrvideo.mp4" type="video/mp4">
-                <source src="https://www.equipo.io/wp-content/themes/equipohealth/images/bgbnrvideo.ogg" type="video/ogg">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <div class="eq-hero-slider">
-            <div class="swiper slider-one-slide text-slider-style-01">
+<section class="eq-section eq-hero eq-hero-desktop" id="home"> 
+    <div class="eq-hero-wrap"> 
+        <div class="eq-hero-video-wrap"> 
+            <video class="eq-hero-video" autoplay muted loop style="opacity: 0.82;"> 
+                <source src="https://www.equipo.io/wp-content/themes/equipohealth/images/bgbnrvideo.mp4" type="video/mp4"> 
+                <source src="https://www.equipo.io/wp-content/themes/equipohealth/images/bgbnrvideo.ogg" type="video/ogg"> 
+                Your browser does not support the video tag. 
+            </video> 
+        </div> 
+        
+        <div class="eq-hero-slider"> 
+            <div class="swiper slider-one-slide text-slider-style-01" data-slider-options='{ "slidesPerView": 1, "loop": true, "speed": 600, "pagination": { "el": ".slider-one-slide-pagination", "clickable": true }, "autoplay": { "delay": 4000, "disableOnInteraction": false }, "navigation": { "nextEl": ".slider-one-slide-next-1", "prevEl": ".slider-one-slide-prev-1" }, "keyboard": { "enabled": true, "onlyInViewport": true }, "effect": "slide" }'> 
                 <div class="swiper-wrapper">
-                    <!-- start text slider item -->
+                    <!-- start text slider item --> 
                     <div class="swiper-slide">
-                        <div class="eq-hero-slider-item">
-                            <div class="eq-hero-details">
-                                <div class="eq-hero-title"> Transforming Healthcare Through Innovation</div>
-                                <div class="eq-hero-title--highlight"> Patients at the Center of Care</div>
-                                <div class="eq-hero-description">
-                                    <p> Revolutionizing Care with AI-Powered Integrated Solutions  </p>
-                                </div>
-                                {% comment %} NOTE: This link should also be a Django {% url %} tag once you create the page for it. {% endcomment %}
-                                <a href="#" class="eq-btn"> Book a Demo </a>
-                            </div>
-                            <div class="eq-hero-image">
-                                <img src="{% static 'pages/images/image-removebg-preview.png' %}" class="img-fluid" alt="Equipohealth" />
+                        <div class="eq-hero-slider-item"> 
+                            <div class="eq-hero-details"> 
+                                <div class="eq-hero-title"> Transforming Healthcare Through Innovation</div> 
+                                <div class="eq-hero-title--highlight"> Patients at the Center of Care</div> 
+                                <div class="eq-hero-description"> 
+                                    <p> Revolutionizing Care with AI-Powered Integrated Solutions  </p> 
+                                </div> 
+                                <a href="/schedule-a-demo" class="eq-btn"> Book a Demo </a> 
+                            </div> 
+                            <div class="eq-hero-image"> 
+                                <img src="{% static 'pages/images/image-removebg-preview.png' %}" class="img-fluid" alt="Equipohealth" /> 
                             </div>
                         </div>
-                    </div>
-                    <!-- end text slider item -->
+                    </div> 
+                    <!-- end text slider item --> 
                     
-                    <!-- start text slider item -->
-                    <div class="swiper-slide">
-                        <div class="eq-hero-slider-item">
-                            <div class="eq-hero-details">
-                                <div class="eq-hero-title"> Team Up for</div>
-                                <div class="eq-hero-title--highlight"> Hospitals resolved to achieve Efficiency</div>
-                                <div class="eq-hero-description">
-                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p>
-                                </div>
-                                <a href="#" class="eq-btn"> Book a Demo </a>
-                            </div>
-                            <div class="eq-hero-image">
-                                <img src="https://www.equipo.io/wp-content/uploads/2024/09/HeroImage_06.webp" class="img-fluid" alt="Equipohealth" />
-                            </div>
+                    <!-- start text slider item --> 
+                    <!-- <div class="swiper-slide">
+                        <div class="eq-hero-slider-item"> 
+                            <div class="eq-hero-details"> 
+                                <div class="eq-hero-title"> Cut Costs, Not Care</div> 
+                                <div class="eq-hero-title--highlight"> Smarter Spending, Better Outcomes</div> 
+                                <div class="eq-hero-description"> 
+                                    <p> AI-Powered Cost Optimization </p>
+                                </div> 
+                                <a href="/schedule-a-demo" class="eq-btn"> Save</a> 
+                            </div> 
+                            <div class="eq-hero-image"> 
+                                <img src="./images/image2.avif" class="img-fluid" alt="Equipohealth" /> 
+                            </div> 
                         </div>
-                    </div>
-                    <!-- end text slider item -->
+                    </div>  -->
+                    <!-- end text slider item --> 
                     
-                    <!-- start text slider item -->
-                    <div class="swiper-slide">
-                        <div class="eq-hero-slider-item">
-                            <div class="eq-hero-details">
-                                <div class="eq-hero-title"> Team Up for</div>
-                                <div class="eq-hero-title--highlight"> IPAs determined to Deliver</div>
-                                <div class="eq-hero-description">
-                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p>
-                                </div>
-                                <a href="#" class="eq-btn"> Book a Demo </a>
-                            </div>
-                            <div class="eq-hero-image">
-                                <img src="{% static 'pages/images/image3.jpg' %}" class="img-fluid" alt="Equipohealth" />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end text slider item -->
                     
-                    <!-- start text slider item -->
+                    
+                    <!-- start text slider item --> 
                     <div class="swiper-slide">
                         <div class="eq-hero-slider-item">
-                            <div class="eq-hero-details">
-                                <div class="eq-hero-title"> Cut Costs, Not Care</div>
-                                <div class="eq-hero-title--highlight"> ACOs persistent in Cost Reduction</div>
-                                <div class="eq-hero-description">
-                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p>
-                                </div>
-                                <a href="#" class="eq-btn"> Book a Demo </a>
-                            </div>
-                            <div class="eq-hero-image">
-                                <img src="https://www.equipo.io/wp-content/uploads/2024/09/HeroImage_04.webp" class="img-fluid" alt="Equipohealth" />
-                            </div>
+                            <div class="eq-hero-details"> 
+                                <div class="eq-hero-title"> Team Up for</div> 
+                                <div class="eq-hero-title--highlight"> Hospitals resolved to achieve Efficiency</div> 
+                                <div class="eq-hero-description"> 
+                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p> 
+                                </div> 
+                                <a href="/schedule-a-demo" class="eq-btn"> Book a Demo </a> 
+                            </div> 
+                            <div class="eq-hero-image"> 
+                                <img src="https://www.equipo.io/wp-content/uploads/2024/09/HeroImage_06.webp" class="img-fluid" alt="Equipohealth" /> 
+                            </div> 
                         </div>
-                    </div>
-                    <!-- end text slider item -->
-                </div>
+                    </div> 
+                    <!-- end text slider item --> 
+                    
+                    <!-- start text slider item --> 
+                    <div class="swiper-slide">
+                        <div class="eq-hero-slider-item">
+                            <div class="eq-hero-details"> 
+                                <div class="eq-hero-title"> Team Up for</div> 
+                                <div class="eq-hero-title--highlight"> IPAs determined to Deliver</div> 
+                                <div class="eq-hero-description"> 
+                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p> 
+                                </div> 
+                                <a href="/schedule-a-demo" class="eq-btn"> Book a Demo </a> 
+                            </div> 
+                            <div class="eq-hero-image">
+                                <img src="{% static 'pages/images/image3.jpg' %}" class="img-fluid" alt="Equipohealth" /> 
+                            </div> 
+                        </div>
+                    </div> 
+                    <!-- end text slider item --> 
+                    
+                    <!-- start text slider item --> 
+                    <div class="swiper-slide">
+                        <div class="eq-hero-slider-item">
+                            <div class="eq-hero-details"> 
+                                <div class="eq-hero-title"> Cut Costs, Not Care</div> 
+                                <div class="eq-hero-title--highlight"> ACOs persistent in Cost Reduction</div> 
+                                <div class="eq-hero-description"> 
+                                    <p> Simplifying Healthcare Through Integrated AI-Driven Care Solutions </p> 
+                                </div> 
+                                <a href="/schedule-a-demo" class="eq-btn"> Book a Demo </a> 
+                            </div> 
+                            <div class="eq-hero-image"> 
+                                <img src="https://www.equipo.io/wp-content/uploads/2024/09/HeroImage_04.webp" class="img-fluid" alt="Equipohealth" /> 
+                            </div> 
+                        </div>
+                    </div> 
+                    <!-- end text slider item --> 
+                </div> 
                 
-                <div class="d-flex">
+                <div class="d-flex"> 
                     <!-- start slider navigation -->
-                    <div class="slider-one-slide-prev-1 swiper-button-prev"> </div>
-                    <div class="slider-one-slide-next-1 swiper-button-next"> </div>
-                    <!-- end slider navigation -->
-                </div>
-            </div>
-        </div>
-    </div>
+                    <div class="slider-one-slide-prev-1 swiper-button-prev"> </div> 
+                    <div class="slider-one-slide-next-1 swiper-button-next"> </div> 
+                    <!-- end slider navigation --> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
 </section>
 
+
+
+
+
+
+
+
 <!--About section-->
-<section class="section about-section">
-<h2 class="gradient-text " id="about">Who We Are </h2>
+<h2 class="gradient-text " id="about">Who We Are
     <div class="animated-line"></div>
+</h2>
 
 <!-- ABOUT SECTION -->
-    
+    <section class="section about-section" id="about">
         <div class="container">
             <div class="about-content">
                 <!-- Left Text - Made wider -->
@@ -161,6 +182,11 @@
                      <p>By harnessing machine learning models trained on robust datasets and enhanced with clinical data from sources, This precise forecasting allows you to anticipate health deteriorations before they become costly emergencies.
                     </p>   
                      <p>Our advanced platform seamlessly integrates with existing healthcare systems, delivering powerful predictive analytics and intelligent automation that empower medical professionals to focus on their primary mission: delivering exceptional patient care.</p>
+                    
+
+
+
+
 
                     <div class="about-stats">
                         <div class="stat-item">
@@ -183,20 +209,42 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <img src="{% static 'pages/images/about3.avif' %}" alt="MedCare Team" loading="lazy">
+                            <!-- <div class="carousel-content">
+                                <h3 class="carousel-title">Our Dedicated Team</h3>
+                                <p class="carousel-description">Our multidisciplinary team of healthcare professionals and AI experts collaborate to create innovative solutions for modern healthcare challenges, blending medical expertise with cutting-edge technology.</p>
+                            </div> -->
                         </div>
                         <div class="swiper-slide">
                             <img src="{% static 'pages/images/about2.jpg' %}" alt="Doctors collaborating" loading="lazy">
+                            <!-- <div class="carousel-content">
+                                <h3 class="carousel-title">Collaborative Approach</h3>
+                                <p class="carousel-description">We believe in working closely with medical professionals to develop tools that truly meet the needs of healthcare providers, ensuring our solutions are both practical and revolutionary.</p>
+                            </div> -->
                         </div>
                         <div class="swiper-slide">
                             <img src="{% static 'pages/images/about1.jpg' %}" alt="Healthcare technology" loading="lazy">
+                            <!-- <div class="carousel-content">
+                                <h3 class="carousel-title">Cutting-Edge Technology</h3>
+                                <p class="carousel-description">Our AI-powered platform uses the latest advancements in machine learning and predictive analytics to forecast health outcomes and optimize treatment plans with remarkable accuracy.</p>
+                            </div> -->
                         </div>
                     </div>
+                    <!-- Carousel navigation -->
+                    <!-- <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div> -->
                 </div>
             </div>
         </div>
     </section>
+    
+    
 
-<!--features-->
+   
+
+
+ <!--features-->
+
 <h2 class="gradient-text " id="features">Features
     <div class="animated-line"></div>
 </h2>
@@ -274,7 +322,14 @@ Enable precise and efficient allocation of clinical resources based on risk leve
     </div>
   </section>
 
- <!--Insights-->
+
+
+
+
+
+
+  <!--Insights-->
+
    <section class="insights-section reveal" id="insights">
         <div class="insights-container">
             <div class="insights-header">
@@ -373,110 +428,116 @@ Enable precise and efficient allocation of clinical resources based on risk leve
                     </div>
                 </div>
             </div>
+             <!-- <div class="stats-highlight">
+                <h3 class="stats-title">The Critical Healthcare Challenge</h3>
+                <p class="stats-content">In short, you are <span class="stats-emphasis">fighting healthcare fires without a forecast</span>. You need a system that doesn't just report on the past, but actively predicts and helps you prevent the future.</p>
+            </div> -->
               <div class="insights-cta">
                 <h3 class="cta-title">Stop Fighting Healthcare Fires Without a Forecast</h3>
                 <p class="cta-subtitle">You need a system that doesn't just report on the past, but actively predicts and helps you prevent the future.</p>
                 <a href="#contact" class="cta-button">Discover Our Solutions</a>
-              </div>
+            </div>
             </div>
             </section>
 
-<!--Contact with us-->
-    <section class="contact-container reveal" id="contact">
-        <div class="contact-header">
-            <h1>Get in Touch with MedCare</h1>
-            <p>Have questions about our risk stratification platform? Our team is here to help you transform your care management strategy.</p>
+
+
+
+
+
+
+
+ <!--Contact with us-->
+<section class="contact-container reveal" id="contact">
+    <div class="contact-header">
+        <h1>Get in Touch with MedCare</h1>
+        <p>Have questions about our risk stratification platform? Our team is here to help you transform your care management strategy.</p>
+    </div>
+    
+    <div class="contact-content">
+        <div class="contact-info">
+            <!-- This part remains unchanged -->
+            <div class="info-header">
+                <h2>Contact Information</h2>
+                <p>Fill out the form or contact us through other channels</p>
+            </div>
+            <div class="contact-details">
+                <div class="detail-item">
+                    <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="detail-content"><h3>Our Location</h3><p>123 Healthcare Ave, Medical District<br>Chennai, CA 94110</p></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="detail-content"><h3>Phone Number</h3><p>91+ 9327711005<br>+1 (415) 555-0123</p></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="detail-content"><h3>Email Address</h3><p>info@medcare.com<br>support@medcare.com</p></div>
+                </div>
+            </div>
+            <div class="social-links">
+                <div class="social-icon"><i class="fab fa-facebook-f"></i></div>
+                <div class="social-icon"><i class="fab fa-twitter"></i></div>
+                <div class="social-icon"><i class="fab fa-linkedin-in"></i></div>
+                <div class="social-icon"><i class="fab fa-instagram"></i></div>
+            </div>
         </div>
         
-        <div class="contact-content">
-            <div class="contact-info">
-                <div class="info-header">
-                    <h2>Contact Information</h2>
-                    <p>Fill out the form or contact us through other channels</p>
-                </div>
-                
-                <div class="contact-details">
-                    <div class="detail-item">
-                        <div class="detail-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="detail-content">
-                            <h3>Our Location</h3>
-                            <p>123 Healthcare Ave, Medical District<br>Chennai, CA 94110</p>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <div class="detail-icon">
-                            <i class="fas fa-phone-alt"></i>
-                        </div>
-                        <div class="detail-content">
-                            <h3>Phone Number</h3>
-                            <p>91+ 9327711005<br>+1 (415) 555-0123</p>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <div class="detail-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="detail-content">
-                            <h3>Email Address</h3>
-                            <p>info@medcare.com<br>support@medcare.com</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="social-links">
-                    <div class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
-                    </div>
-                    <div class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </div>
-                    <div class="social-icon">
-                        <i class="fab fa-linkedin-in"></i>
-                    </div>
-                    <div class="social-icon">
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                </div>
+        <div class="contact-form">
+            <div class="form-header">
+                <h2>Send Us a Message</h2>
+                <p>We'll get back to you as soon as possible</p>
             </div>
             
-            <div class="contact-form">
-                <div class="form-header">
-                    <h2>Send Us a Message</h2>
-                    <p>We'll get back to you as soon as possible</p>
+            <!-- This block will display success/error messages after the user submits the form -->
+            {% for message in messages %}
+                <div class="alert-message" style="padding: 10px; margin: 0 0 15px 0; border-radius: 5px; color: #fff; text-align: center; background-color: {% if 'success' in message.tags %}#4CAF50{% else %}#f44336{% endif %};">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <!-- IMPORTANT CHANGES START HERE -->
+            <form id="contactForm" method="POST" action="{% url 'contact_submission' %}">
+                <!-- Django's security token is required -->
+                {% csrf_token %}
+                
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <!-- Add the 'name' attribute for the backend -->
+                    <input type="text" id="name" name="contact_name" placeholder="Enter your name" required>
                 </div>
                 
-                <form id="contactForm">
-                    <div class="input-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" placeholder="Enter your name" required>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" placeholder="Enter your email" required>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="company">Company/Organization</label>
-                        <input type="text" id="company" placeholder="Where do you work?">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="message">Your Message</label>
-                        <textarea id="message" placeholder="How can we help you?" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i> Send Message
-                    </button>
-                </form>
-            </div>
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <!-- Add the 'name' attribute for the backend -->
+                    <input type="email" id="email" name="contact_email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="company">Company/Organization</label>
+                    <!-- Add the 'name' attribute for the backend -->
+                    <input type="text" id="company" name="contact_company" placeholder="Where do you work?">
+                </div>
+                
+                <div class="input-group">
+                    <label for="message">Your Message</label>
+                    <!-- Add the 'name' attribute for the backend -->
+                    <textarea id="message" name="contact_message" placeholder="How can we help you?" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+            <!-- IMPORTANT CHANGES END HERE -->
         </div>
-    </section>
+    </div>
+</section>
+
+
+
+
+
 
     <!-- Footer -->
     <footer>
@@ -533,207 +594,190 @@ Enable precise and efficient allocation of clinical resources based on risk leve
             <p>&copy; 2025 MedCare. All Rights Reserved. | Designed for better healthcare</p>
         </div>
     </footer>
+ 
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+
+
+  
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script>
-    // It's best practice to wrap all your JS in one 'DOMContentLoaded' event listener
-    // to make sure the HTML is fully loaded before the script runs.
-    document.addEventListener('DOMContentLoaded', function() {
-        
-        // --- INITIALIZATION ---
+  document.addEventListener("DOMContentLoaded", () => {
+
+    // --- ALL YOUR ANIMATION LOGIC IS PRESERVED BELOW ---
+
+    // Main initialization function
+    function initAll() {
         initHeroSwiper();
         initAboutSwiper();
         initScrollAnimations();
         initCounterAnimations();
         initInsightAnimations();
-        initContactForm();
-        initRevealOnScroll();
+        initRevealAnimations();
+        initSocialIconHover();
+    }
 
-        // --- FUNCTIONS ---
-
-        // Hero Swiper initialization
-        function initHeroSwiper() {
+    // Hero Swiper initialization
+    function initHeroSwiper() {
+        if (typeof Swiper !== 'undefined') {
             new Swiper(".slider-one-slide", {
-                slidesPerView: 1,
-                loop: true,
-                speed: 600,
-                autoplay: {
-                    delay: 4000,
-                    disableOnInteraction: false,
-                },
-                navigation: {
-                    nextEl: ".slider-one-slide-next-1",
-                    prevEl: ".slider-one-slide-prev-1",
-                },
-                keyboard: {
-                    enabled: true,
-                    onlyInViewport: true,
-                },
+                slidesPerView: 1, loop: true, speed: 600,
+                autoplay: { delay: 4000, disableOnInteraction: false },
+                navigation: { nextEl: ".slider-one-slide-next-1", prevEl: ".slider-one-slide-prev-1" },
+                keyboard: { enabled: true, onlyInViewport: true },
                 effect: "slide",
             });
         }
+    }
 
-        // About section Swiper initialization
-        function initAboutSwiper() {
+    // About section Swiper initialization
+    function initAboutSwiper() {
+        if (typeof Swiper !== 'undefined') {
             new Swiper('.about-carousel', {
                 loop: true,
-                autoplay: {
-                    delay: 6000,
-                    disableOnInteraction: false,
-                },
+                navigation: { nextEl: '.about-carousel .swiper-button-next', prevEl: '.about-carousel .swiper-button-prev' },
+                pagination: { el: '.about-carousel .swiper-pagination', clickable: true },
+                autoplay: { delay: 6000, disableOnInteraction: false },
                 effect: 'fade',
-                fadeEffect: {
-                    crossFade: true
-                },
+                fadeEffect: { crossFade: true },
                 speed: 1200,
             });
         }
+    }
 
-        // Scroll animations for features section
-        function initScrollAnimations() {
-            const sections = document.querySelectorAll('.eq-block-section');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('show');
-                    }
-                });
-            }, { threshold: 0.2 });
-
-            sections.forEach(section => {
-                observer.observe(section);
+    // Scroll animations for features section
+    function initScrollAnimations() {
+        const sections = document.querySelectorAll('.eq-block-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
             });
+        }, { threshold: 0.2 });
+        sections.forEach(section => observer.observe(section));
+    }
+
+    // Counter animation for stats
+    function initCounterAnimations() {
+        let countersAnimated = false;
+        const aboutSection = document.getElementById('about');
+
+        function animateCounter(element, target, duration) {
+            let startTime = null;
+            const startValue = 0;
+            const suffix = target.toString().includes('+') ? '+' : (target.toString().includes('%') ? '%' : '');
+            const numericTarget = parseInt(target);
+            function updateCounter(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                const currentValue = Math.floor(progress * numericTarget);
+                element.textContent = currentValue + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = numericTarget + suffix;
+                }
+            }
+            requestAnimationFrame(updateCounter);
         }
 
-        // Counter animation for stats in About section
-        function initCounterAnimations() {
-            let countersAnimated = false;
-
-            function animateCounter(element, target, duration) {
-                let startTime = null;
-                const startValue = 0;
-                const suffix = target.toString().includes('+') ? '+' : (target.toString().includes('%') ? '%' : '');
-                const numericTarget = parseInt(target);
-                
-                function updateCounter(timestamp) {
-                    if (!startTime) startTime = timestamp;
-                    const progress = Math.min((timestamp - startTime) / duration, 1);
-                    const currentValue = Math.floor(progress * numericTarget);
-                    
-                    element.textContent = currentValue + suffix;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        element.textContent = numericTarget + suffix;
+        function checkScroll() {
+            if (aboutSection && !countersAnimated) {
+                const rect = aboutSection.getBoundingClientRect();
+                const isVisible = (rect.top <= window.innerHeight / 2 && rect.bottom >= 0);
+                if (isVisible) {
+                    const counter1 = document.getElementById('counter-1');
+                    const counter2 = document.getElementById('counter-2');
+                    const counter3 = document.getElementById('counter-3');
+                    if (counter1 && counter2 && counter3) {
+                        animateCounter(counter1, '500+', 2000);
+                        animateCounter(counter2, '70%', 2000);
+                        animateCounter(counter3, '98%', 2000);
+                        countersAnimated = true;
+                        window.removeEventListener('scroll', checkScroll); // Stop listening after animation
                     }
                 }
-                requestAnimationFrame(updateCounter);
-            }
-
-            const aboutSection = document.getElementById('about');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !countersAnimated) {
-                        const counter1 = document.getElementById('counter-1');
-                        const counter2 = document.getElementById('counter-2');
-                        const counter3 = document.getElementById('counter-3');
-                        
-                        if (counter1 && counter2 && counter3) {
-                            animateCounter(counter1, '500+', 2000);
-                            animateCounter(counter2, '70%', 2000);
-                            animateCounter(counter3, '98%', 2000);
-                            countersAnimated = true; // Ensure it only runs once
-                        }
-                    }
-                });
-            }, { threshold: 0.5 }); // Start when 50% of the section is visible
-
-            if (aboutSection) {
-                observer.observe(aboutSection);
             }
         }
+        window.addEventListener('scroll', checkScroll);
+        checkScroll(); // Check on load
+    }
 
-        // Animations for the Insights section
-        function initInsightAnimations() {
-            const insightItems = document.querySelectorAll('.insight-item');
-            insightItems.forEach(item => {
-                item.style.opacity = 0;
-                item.style.transform = 'translateY(20px)';
-                item.style.transition = 'all 0.6s ease';
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Find all items within the intersecting container
-                        const itemsToAnimate = entry.target.querySelectorAll('.insight-item');
-                        itemsToAnimate.forEach((item, index) => {
-                            setTimeout(() => {
-                                item.style.opacity = 1;
-                                item.style.transform = 'translateY(0)';
-                            }, index * 150); // Stagger the animation
-                        });
-                        observer.unobserve(entry.target); // Animate only once
-                    }
-                });
-            }, { threshold: 0.2 });
-            
-            // Observe the parent container of the items
-            const problemSolutionContainer = document.querySelector('.problem-solution-container');
-            if(problemSolutionContainer) {
-                observer.observe(problemSolutionContainer);
-            }
-        }
-
-        // Handle the contact form submission
-        function initContactForm() {
-            const contactForm = document.getElementById('contactForm');
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const name = document.getElementById('name').value;
-                    if (!name) return; // Simple validation
-
-                    const submitBtn = this.querySelector('.submit-btn');
-                    const originalBtnHTML = submitBtn.innerHTML;
-                    
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                    
-                    setTimeout(() => {
-                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                        submitBtn.style.background = 'linear-gradient(90deg, #4CAF50, #2E7D32)';
-                        
+    // Animate insight items on scroll
+    function initInsightAnimations() {
+        const insightItems = document.querySelectorAll('.insight-item');
+        insightItems.forEach(item => {
+            item.style.opacity = 0;
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'all 0.6s ease';
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const itemsToAnimate = entry.target.querySelectorAll('.insight-item');
+                    itemsToAnimate.forEach((item, index) => {
                         setTimeout(() => {
-                            this.reset();
-                            submitBtn.innerHTML = originalBtnHTML;
-                            submitBtn.style.background = ''; // Revert to original style
-                        }, 2000);
-                    }, 1500);
-                });
-            }
-        }
-
-        // Handle the general 'reveal' on scroll animation
-        function initRevealOnScroll() {
-            const reveals = document.querySelectorAll(".reveal");
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("active");
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.2 });
-
-            reveals.forEach(reveal => {
-                observer.observe(reveal);
+                            item.style.opacity = 1;
+                            item.style.transform = 'translateY(0)';
+                        }, index * 150);
+                    });
+                    observer.unobserve(entry.target);
+                }
             });
-        }
-    });
+        }, { threshold: 0.1 });
+        const container = document.querySelector('.problem-solution-container');
+        if (container) observer.observe(container);
+    }
+    
+    // Animate general .reveal elements
+    function initRevealAnimations() {
+        const reveals = document.querySelectorAll(".reveal");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("active");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        reveals.forEach(reveal => observer.observe(reveal));
+    }
+
+    // Add hover effects to social icons
+    function initSocialIconHover() {
+        const socialIcons = document.querySelectorAll('.social-icon');
+        socialIcons.forEach(icon => {
+            icon.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            icon.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    }
+
+    // --- IMPORTANT ---
+    // The code blocks that started with:
+    // document.getElementById('contactForm').addEventListener('submit', function(e) { e.preventDefault(); ... });
+    // have been COMPLETELY REMOVED.
+    //
+    // This allows the form to perform its default action, which is to
+    // submit the data to your Django backend URL as intended. Your
+    // Django backend is now responsible for handling the submission.
+
+    // Initialize all functions
+    initAll();
+});
+
+ 
 </script>
 
 </body>
 </html>
-

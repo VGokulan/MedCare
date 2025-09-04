@@ -23,8 +23,11 @@
     {% endif %}
 
     <div class="signup-container">
-      <!-- The form action points to the 'user_signup' URL, which contains our backend logic -->
-      <form action="{% url 'signup_page' %}" method="POST">
+      <!-- 
+        THE FIX: The form's action now correctly points to the 'user_signup' URL,
+        which is connected to the view that handles the form submission logic.
+       -->
+      <form action="{% url 'user_signup' %}" method="POST">
         {% csrf_token %}
         <h1>Create Account</h1>
         <div class="social-icons">

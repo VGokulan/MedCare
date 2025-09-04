@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+import os
 
 from pathlib import Path
 
@@ -80,7 +81,10 @@ DATABASES = {
         "USER": "medical",                             # From your PGUSER variable
         "PASSWORD": "Cts123456",                       # From your PGPWORD variable
         "HOST": "medcare.postgres.database.azure.com", # From your PGHOST variable
-        "PORT": "5432",                                # From your PGPORT variable
+        "PORT": "5432",
+        'OPTIONS': {
+            'sslmode': 'require',   # Azure PG requires SSL
+        },                                # From your PGPORT variable
     }
 }
 
@@ -121,6 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
