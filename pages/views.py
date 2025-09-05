@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,  get_object_or_404
+import json # Import the json library
+from decimal import Decimal 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -10,8 +12,19 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator # Import Django's Paginator
 from django.db.models import Q 
 from django.core.cache import cache 
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from . import ai_services
 
 
+
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            # Convert Decimal objects to a float before serializing
+            return float(obj)
+        return super(DecimalEncoder, self).default(obj)
 
 # --- Page Rendering Views ---
 
@@ -243,6 +256,79 @@ def get_patient_filters():
 
     return filters
 
+@login_required
+def patient_detail(request, patient_id):
+    """
+    Displays a detailed view for a single patient, including charts and analysis.
+    """
+    # Security check: Ensure only staff can access this page
+    if not request.user.is_staff:
+        return redirect('user_dashboard')
+
+    # Fetch the specific patient record from the database.
+    # get_object_or_404 is the professional way to handle this: it will
+    # automatically show a "Page Not Found" error if no patient matches the ID.
+    patient = get_object_or_404(PatientAnalysis, pk=patient_id)
+    
+    # Prepare a dictionary of data specifically for the JavaScript charts
+    patient_data_for_js = {
+        'desynpuf_id': patient.desynpuf_id,
+        'risk_30d_hospitalization': patient.risk_30d_hospitalization,
+        'risk_60d_hospitalization': patient.risk_60d_hospitalization,
+        'risk_90d_hospitalization': patient.risk_90d_hospitalization,
+    }
+
+    context = {
+        'patient': patient,
+        'user': request.user,
+        # THE FIX: Use the custom DecimalEncoder to safely convert the dictionary to JSON
+        'patient_data_json': json.dumps(patient_data_for_js, cls=DecimalEncoder)
+    }
+    return render(request, 'pages/patient_detail.html', context)
+
+
+
+@login_required
+def get_ai_summary_view(request, patient_id):
+    patient = get_object_or_404(PatientAnalysis, pk=patient_id)
+    summary = ai_services.get_ai_summary(patient)
+    return JsonResponse({'summary': summary})
+
+# --- THIS IS THE CORRECTED VIEW WITH DEBUGGING ---
+@require_POST
+@csrf_exempt
+@login_required
+def chatbot_view(request):
+    """
+    API view to handle incoming messages for the AI chatbot.
+    """
+    # --- LOUD DEBUGGING ---
+    # This will print the raw body of the request to your terminal.
+    print("--- CHATBOT VIEW RECEIVED ---")
+    print(f"Request Body: {request.body}")
+    # --- END DEBUGGING ---
+    
+    try:
+        data = json.loads(request.body)
+        print(f"Parsed Data: {data}") # See what the data looks like after parsing
+        
+        patient_id = data.get('patient_id')
+        message = data.get('message')
+        
+        if not patient_id or not message:
+            print("ERROR: patient_id or message is missing from parsed data.")
+            return JsonResponse({'error': 'Missing patient_id or message'}, status=400)
+            
+        patient = get_object_or_404(PatientAnalysis, pk=patient_id)
+        ai_response = ai_services.get_chatbot_response(patient, message)
+        
+        return JsonResponse({'response': ai_response})
+    except json.JSONDecodeError:
+        print("ERROR: Could not decode JSON from request body.")
+        return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return JsonResponse({'error': str(e)}, status=500)
 
 # --- A SINGLE, UNIFIED LOGOUT ---
 

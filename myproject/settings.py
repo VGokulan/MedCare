@@ -96,6 +96,7 @@ CACHES = {
         }
     }
 }
+GOOGLE_API_KEY="AIzaSyBmVLPW3IGEFUyFVyNt1dIZXCOSHHcodBs"
 
 
 

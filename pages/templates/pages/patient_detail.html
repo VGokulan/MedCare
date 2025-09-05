@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Details - {{ patient.patient_name }}</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'pages/css/dashboard_style.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'pages/css/patient_detail.css' %}" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- THE FIX: The CSRF token is placed here so JavaScript can easily find it. -->
+      {% csrf_token %}
+
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <div class="logo"><span class="logo-text">PRD</span></div>
+        </div>
+        <div class="header-center"><h1>Patient Profile</h1></div>
+        <div class="header-right">
+          <div class="theme-toggle">
+            <i class="fas fa-sun"></i>
+            <div class="toggle-switch" id="themeToggle">
+              <div class="toggle-slider"></div>
+            </div>
+            <i class="fas fa-moon"></i>
+          </div>
+          <div class="user-profile">
+            <span class="user-name"
+              >{{ user.first_name|default:user.email }}</span
+            ><span class="user-status">Online</span>
+            <div class="user-avatar"></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <nav class="sidebar-nav">
+            <a href="{% url 'admin_dashboard' %}" class="nav-item"
+              ><i class="fas fa-users"></i><span>Patients List</span></a
+            >
+            <a href="{% url 'upload_data' %}" class="nav-item"
+              ><i class="fas fa-plus"></i><span>Upload Data</span></a
+            >
+            <a href="{% url 'logout' %}" class="nav-item"
+              ><i class="fas fa-sign-out-alt"></i><span>Logout</span></a
+            >
+          </nav>
+        </aside>
+
+        <!-- Content Area -->
+        <div class="content">
+          <div class="patient-detail-container">
+            <!-- Patient Header -->
+            <div class="patient-header">
+              <div class="patient-info">
+                <div class="patient-avatar">
+                  {{ patient.patient_name|first }}
+                </div>
+                <div class="patient-summary">
+                  <h1>{{ patient.patient_name }}</h1>
+                  <p>
+                    {{ patient.age }} years old {{ patient.get_gender_display }}
+                    <span class="separator">|</span> ID: {{ patient.desynpuf_id
+                    }}
+                  </p>
+                </div>
+              </div>
+              <div class="patient-risk-tier">
+                <span class="risk-tier-label">Risk Tier</span>
+                <div class="risk-tier-value tier-{{ patient.risk_tier }}">
+                  {{ patient.get_risk_tier_display }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="content-grid">
+              <div class="left-column">
+                <div class="chart-card">
+                  <h3>Hospitalization Risk</h3>
+                  <canvas id="riskProgressionChart"></canvas>
+                </div>
+              </div>
+              <div class="right-column">
+                <div class="card-group-title">Financial Analysis</div>
+                <div class="financial-cards-container">
+                  <div class="info-card">
+                    <h4>Total Medicare Costs</h4>
+                    <p>${{ patient.total_medicare_costs|floatformat:2 }}</p>
+                  </div>
+                  <div class="info-card">
+                    <h4>Potential Savings</h4>
+                    <p>${{ patient.cost_savings|floatformat:2 }}</p>
+                  </div>
+                  <div class="info-card">
+                    <h4>Intervention Cost</h4>
+                    <p>${{ patient.annual_intervention_cost|floatformat:2 }}</p>
+                  </div>
+                </div>
+                <div class="summary-card">
+                  <h3>AI Generated Summary</h3>
+                  <p id="aiSummaryText">Generating AI summary...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chatbot FAB and Modal -->
+          <div id="chatFab" class="chat-fab"><i class="fas fa-robot"></i></div>
+          <div id="chatModal" class="chat-modal">
+            <div class="chat-modal-header">
+              <h3>AI Intervention Planner</h3>
+              <button id="closeChat" class="close-chat-btn">&times;</button>
+            </div>
+            <div id="chatMessages" class="chat-modal-body"></div>
+            <div class="chat-modal-footer">
+              <input
+                type="text"
+                id="chatInput"
+                placeholder="Ask about an intervention plan..."
+              /><button id="sendChatBtn">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{ patient_data_json|json_script:"patient-data" }}
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const patientData = JSON.parse(
+          document.getElementById("patient-data").textContent
+        );
+        // THE FIX: Get the CSRF token value from the hidden input field Django creates.
+        const csrfToken = document.querySelector(
+          'input[name="csrfmiddlewaretoken"]'
+        ).value;
+
+        // --- Chart Initializations ---
+        const riskProgressionCtx = document
+          .getElementById("riskProgressionChart")
+          .getContext("2d");
+        new Chart(riskProgressionCtx, {
+          type: "bar",
+          data: {
+            labels: ["30-Day", "60-Day", "90-Day"],
+            datasets: [
+              {
+                label: "Hospitalization Risk",
+                data: [
+                  patientData.risk_30d_hospitalization || 0,
+                  patientData.risk_60d_hospitalization || 0,
+                  patientData.risk_90d_hospitalization || 0,
+                ],
+                backgroundColor: [
+                  "rgba(255, 205, 86, 0.6)",
+                  "rgba(255, 159, 64, 0.6)",
+                  "rgba(255, 99, 132, 0.6)",
+                ],
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 1.0,
+                ticks: { callback: (value) => (value * 100).toFixed(0) + "%" },
+              },
+            },
+          },
+        });
+
+        // --- Fetch AI Summary ---
+        const aiSummaryText = document.getElementById("aiSummaryText");
+        fetch(`{% url 'ai_summary' patient.desynpuf_id %}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.summary)
+              aiSummaryText.innerHTML = marked.parse(data.summary);
+            else aiSummaryText.textContent = "Could not generate AI summary.";
+          })
+          .catch(
+            (error) =>
+              (aiSummaryText.textContent = "Failed to load AI summary.")
+          );
+
+        // --- Chatbot Functionality ---
+        const chatFab = document.getElementById("chatFab");
+        const chatModal = document.getElementById("chatModal");
+        const closeChatBtn = document.getElementById("closeChat");
+        const chatInput = document.getElementById("chatInput");
+        const sendChatBtn = document.getElementById("sendChatBtn");
+        const chatMessages = document.getElementById("chatMessages");
+
+        chatFab.addEventListener("click", () =>
+          chatModal.classList.add("active")
+        );
+        closeChatBtn.addEventListener("click", () =>
+          chatModal.classList.remove("active")
+        );
+
+        const sendMessage = async () => {
+          const userInput = chatInput.value.trim();
+          if (userInput === "") return;
+          appendMessage(userInput, "user");
+          chatInput.value = "";
+          appendMessage("...", "bot", true);
+
+          try {
+            const response = await fetch(`{% url 'chatbot' %}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken, // THE FIX: Use the token value we read earlier.
+              },
+              body: JSON.stringify({
+                patient_id: patientData.desynpuf_id,
+                message: userInput,
+              }),
+            });
+            const data = await response.json();
+
+            chatMessages.removeChild(chatMessages.lastChild);
+            if (response.ok) appendMessage(marked.parse(data.response), "bot");
+            else
+              appendMessage(`Error: ${data.error || "Unknown error"}`, "bot");
+          } catch (error) {
+            chatMessages.removeChild(chatMessages.lastChild);
+            appendMessage(
+              "Network error. Could not reach the AI assistant.",
+              "bot"
+            );
+          }
+        };
+        sendChatBtn.addEventListener("click", sendMessage);
+        chatInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") sendMessage();
+        });
+
+        function appendMessage(content, sender, isTyping = false) {
+          const msgDiv = document.createElement("div");
+          msgDiv.className = `chat-message ${sender}-message`;
+          if (isTyping) {
+            msgDiv.classList.add("typing-indicator");
+            msgDiv.innerHTML = "<span>.</span><span>.</span><span>.</span>";
+          } else {
+            msgDiv.innerHTML = content;
+          }
+          chatMessages.appendChild(msgDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        appendMessage("Hello! Ask me to generate an intervention plan.", "bot");
+
+        // --- Theme Toggle ---
+        // (Your theme toggle logic here)
+      });
+    </script>
+  </body>
+</html>

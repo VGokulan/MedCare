@@ -13,6 +13,11 @@ urlpatterns = [
     path('user_signup/', views.user_signup, name='user_signup'),
     path('user_login/', views.user_login, name='user_login'),
 
+    path('patient/<str:patient_id>/', views.patient_detail, name='patient_detail'),
+
+    path('api/ai-summary/<str:patient_id>/', views.get_ai_summary_view, name='ai_summary'),
+    path('api/chatbot/', views.chatbot_view, name='chatbot'),
+
     path('admin_login/', views.admin_login, name='admin_login'),
     path('contact-submission/', views.contact_submission, name='contact_submission'),
 

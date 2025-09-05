@@ -87,7 +87,13 @@ class PatientAnalysis(models.Model):
     risk_90d_hospitalization = models.FloatField()
     mortality_risk = models.FloatField()
 
-    RISK_TIER_CHOICES = [('1', 'Critical'), ('2', 'High'), ('3', 'Medium'), ('4', 'Low'), ('5', 'Healthy')]
+    RISK_TIER_CHOICES = [
+        ('1', 'Healthy'),
+        ('2', 'Low Risk'),
+        ('3', 'Medium Risk'),
+        ('4', 'High Risk'),
+        ('5', 'Critical'),
+    ]
     risk_tier = models.CharField(max_length=10, choices=RISK_TIER_CHOICES)
     risk_tier_label = models.CharField(max_length=50) 
     

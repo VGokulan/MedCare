@@ -35,7 +35,12 @@
             <div class="content">
                 <div class="patients-header">
                     <div class="patients-title"><h1>Patient Management</h1><p>View and manage all patients ranked by risk tier</p></div>
-                    <div class="patients-actions"><button class="btn-primary" onclick="exportPatients()"><i class="fas fa-download"></i> Export Data</button></div>
+                    <div class="patients-actions">
+                        <!-- THE FIX: This is now a direct link to your Streamlit app -->
+                        <a href="https://cts-project-app-pbkhtfxuuf2r6dcbqnv4pe.streamlit.app/" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                            <i class="fas fa-download"></i> Demo App
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Filters Section -->
@@ -96,7 +101,12 @@
                                     <!-- Calling the new get_conditions_display method from your model -->
                                     <td class="conditions-cell">{{ patient.get_conditions_display }}</td>
                                     <td>
-                                        <div class="action-buttons"><button class="action-btn view" title="View Details"><i class="fas fa-eye"></i></button></div>
+                                        <div class="action-buttons">
+                                            <!-- THE FIX: The button is now a link -->
+                                            <a href="{% url 'patient_detail' patient.desynpuf_id %}" class="action-btn view" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% empty %}
